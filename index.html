@@ -20,12 +20,13 @@
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 100%;
-    /* aquí se carga la imagen de fondo desde la carpeta `main` */
+    /* aquí uso 100vh para asegurar que el flex centre bien verticalmente */
+    height: 100vh;  
     background-image: url('Doctor clinica MCB_Mesa de trabajo 1.jpg');
-    background-size: cover;           /* cubre todo el contenedor */
-    background-position: center;      /* centra la imagen */
-    background-repeat: no-repeat;     /* no la repite */
+    /* COVER corta bordes, CONTAIN la ajusta completa */
+    background-size: contain;        
+    background-position: center;     
+    background-repeat: no-repeat;    
     font-family: 'Inter', sans-serif;
     display: flex;
     justify-content: center;
@@ -501,41 +502,51 @@
   }
 ];
 
+    
     const tarifaEl = document.getElementById('tarifa');
     const generoEl = document.getElementById('genero');
-    const edadEl  = document.getElementById('edad');
-    const resultEl= document.getElementById('result');
-
-    // Poblar los dropdowns
+    const edadEl   = document.getElementById('edad');
+    const resultEl = document.getElementById('result');
+    const weeklyEl = document.getElementById('weekly');
+  
+    // Poblar dropdowns
     const tarifas = [...new Set(data.map(d => d.Tarifa))];
-    const generos = [...new Set(data.map(d => d.Género))];
+    const generos = [...new Set(data.map(d => d['Género']))];     // nota el uso de ['Género']
     const edades  = [...new Set(data.map(d => d.RangoEdad))];
-
+  
     tarifas.forEach(v => tarifaEl.add(new Option(v, v)));
     generos.forEach(v => generoEl.add(new Option(v, v)));
     edades .forEach(v => edadEl.add(new Option(v, v)));
-
+  
+    // Selección inicial y primer render
+    tarifaEl.selectedIndex = generoEl.selectedIndex = edadEl.selectedIndex = 0;
+  
     function actualizar() {
-      const t = tarifaEl.value, g = generoEl.value, e = edadEl.value;
-      const found = data.find(d => d.Tarifa === t && d.Género === g && d.RangoEdad === e);
-
-      // Mostrar prima anual
+      const t = tarifaEl.value,
+            g = generoEl.value,
+            e = edadEl.value;
+  
+      // acceso seguro a la propiedad acentuada
+      const found = data.find(d =>
+        d.Tarifa    === t &&
+        d['Género'] === g &&
+        d.RangoEdad === e
+      );
+  
+      // Prima anual
       resultEl.textContent = found
         ? found.Precio.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })
         : '–';
-
-      // Mostrar prima semanal
-      const weeklyEl = document.getElementById('weekly');
-      if (found) {
-        const weeklyCost = found.Precio / 48;
-        weeklyEl.textContent = weeklyCost.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' });
-      } else {
-        weeklyEl.textContent = '–';
-      }
+  
+      // Prima semanal
+      weeklyEl.textContent = found
+        ? (found.Precio / 48).toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })
+        : '–';
     }
-
-    // Asociar evento onchange
+  
+    // Asociar y disparar
     tarifaEl.onchange = generoEl.onchange = edadEl.onchange = actualizar;
+    actualizar();
   </script>
 </body>
 </html>
