@@ -2,101 +2,99 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
   <title>Cotizador GNP</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
-    :root {
-      --color-primary:#1d4ed8;
-      --color-accent: #2563eb;
-      --color-label:  #6b7280;
-      --gap:          1rem;
-      --label-size:   0.9rem;
-    }
+  :root {
+    --bg-page:      #f5f7fa;
+    --bg-card:      #ffffff;
+    --color-primary:#1d4ed8;
+    --color-accent: #2563eb;
+    --color-label:  #6b7280;
+    --radius:       12px;
+    --gap:          1rem;
+  }
 
-    /* -------------- */
-    /*  Fondo y tamaño */
-    /* -------------- */
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 2048px;   /* Ancho exacto de la imagen */
-      height: 1092px;  /* Alto exacto de la imagen */
-      background: url('Doctor clinica MCB_Mesa de trabajo 1.jpg') no-repeat center center;
-      background-size: cover;
-      font-family: 'Inter', sans-serif;
-      position: relative;
-      overflow: hidden;
-    }
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    /* aquí se carga la imagen de fondo desde la carpeta `main` */
+    background-image: url('Doctor clinica MCB_Mesa de trabajo 1.jpg');
+    background-size: cover;           /* cubre todo el contenedor */
+    background-position: center;      /* centra la imagen */
+    background-repeat: no-repeat;     /* no la repite */
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-    /* -------------- */
-    /*  Card interna  */
-    /* -------------- */
-    .card {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(255,255,255,0.85);
-      border-radius: 12px;
-      padding: calc(var(--gap)*2);
-      width: 320px;
-      text-align: center;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-    }
+  .card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    padding: calc(var(--gap) * 2);
+    width: 320px;
+    text-align: center;
+  }
 
-    .logo {
-      max-width: 160px;
-      margin-bottom: var(--gap);
-    }
+  .logo {
+    max-width: 160px;
+    margin-bottom: var(--gap);
+  }
 
-    h1 {
-      font-size: 1.25rem;
-      margin: 0.25rem 0 var(--gap);
-      color: var(--color-primary);
-    }
+  h1 {
+    font-size: 1.25rem;
+    margin: 0.25rem 0 var(--gap);
+    color: var(--color-primary);
+  }
 
-    label {
-      display: block;
-      text-align: left;
-      font-size: var(--label-size);
-      color: var(--color-label);
-      margin: 0.5rem 0 0.25rem;
-    }
+  .label {
+    font-size: 0.9rem;
+    color: var(--color-label);
+    margin: 0.5rem 0 0.25rem;
+    text-align: left;
+    display: block;
+  }
 
-    select {
-      width: 100%;
-      padding: 0.6rem;
-      margin-bottom: var(--gap);
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      font-size: 1rem;
-      appearance: none;
-      background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path fill='%23333' d='M0 0l5 6 5-6z'/></svg>");
-      background-repeat: no-repeat;
-      background-position: right 0.75rem center;
-      background-size: 10px 6px;
-      transition: border-color .2s, box-shadow .2s;
-    }
-    select:focus {
-      outline: none;
-      border-color: var(--color-accent);
-      box-shadow: 0 0 0 3px rgba(37,99,235,0.2);
-    }
+  select {
+    display: block;
+    width: 100%;
+    padding: 0.6rem;
+    margin-bottom: var(--gap);
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 1rem;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path fill='%23333' d='M0 0l5 6 5-6z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 10px 6px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
 
-    .result {
-      margin-top: var(--gap);
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: var(--color-primary);
-      transition: transform .2s, color .2s;
-    }
-    .result:hover {
-      transform: scale(1.05);
-      color: var(--color-accent);
-    }
-  </style>
+  select:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.2);
+  }
+
+  .result {
+    margin-top: var(--gap);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+
+  .result:hover {
+    transform: scale(1.05);
+    color: var(--color-accent);
+  }
+</style>
 </head>
 <body>
   <div class="card">
@@ -104,22 +102,16 @@
     <h1>Tarifa Gastos Médicos</h1>
     <h2>GNP  2025</h2>
 
- <label for="tarifa">Tarifa</label>
     <select id="tarifa"></select>
-
-    <label for="genero">Género</label>
     <select id="genero"></select>
-
-    <label for="edad">Edad</label>
     <select id="edad"></select>
 
-    <label for="result">Prima Total</label>
+    <p class="label">Prima Total</p>
     <div class="result" id="result">–</div>
 
-    <label for="weekly">Prima Semanal</label>
+    <p class="label">Prima Semanal</p>
     <div class="result" id="weekly">–</div>
   </div>
-
 
   <script>
     const data = [
@@ -509,32 +501,40 @@
   }
 ];
 
- const tarifaEl = document.getElementById('tarifa'),
-          generoEl = document.getElementById('genero'),
-          edadEl   = document.getElementById('edad'),
-          resultEl = document.getElementById('result'),
-          weeklyEl = document.getElementById('weekly');
+    const tarifaEl = document.getElementById('tarifa');
+    const generoEl = document.getElementById('genero');
+    const edadEl  = document.getElementById('edad');
+    const resultEl= document.getElementById('result');
 
-    // Poblar selects
-    [...new Set(data.map(d=>d.Tarifa))].forEach(v=>tarifaEl.add(new Option(v,v)));
-    [...new Set(data.map(d=>d.Genero))].forEach(v=>generoEl.add(new Option(v,v)));
-    [...new Set(data.map(d=>d.RangoEdad))].forEach(v=>edadEl.add(new Option(v,v)));
+    // Poblar los dropdowns
+    const tarifas = [...new Set(data.map(d => d.Tarifa))];
+    const generos = [...new Set(data.map(d => d.Género))];
+    const edades  = [...new Set(data.map(d => d.RangoEdad))];
 
-    // Mostrar por defecto
-    tarifaEl.selectedIndex = generoEl.selectedIndex = edadEl.selectedIndex = 0;
+    tarifas.forEach(v => tarifaEl.add(new Option(v, v)));
+    generos.forEach(v => generoEl.add(new Option(v, v)));
+    edades .forEach(v => edadEl.add(new Option(v, v)));
 
     function actualizar() {
-      const t=tarifaEl.value, g=generoEl.value, e=edadEl.value;
-      const found = data.find(d=>d.Tarifa===t && d.Genero===g && d.RangoEdad===e);
+      const t = tarifaEl.value, g = generoEl.value, e = edadEl.value;
+      const found = data.find(d => d.Tarifa === t && d.Género === g && d.RangoEdad === e);
+
+      // Mostrar prima anual
       resultEl.textContent = found
-        ? found.Precio.toLocaleString('es-MX',{style:'currency',currency:'MXN'})
+        ? found.Precio.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })
         : '–';
-      weeklyEl.textContent = found
-        ? (found.Precio/48).toLocaleString('es-MX',{style:'currency',currency:'MXN'})
-        : '–';
+
+      // Mostrar prima semanal
+      const weeklyEl = document.getElementById('weekly');
+      if (found) {
+        const weeklyCost = found.Precio / 48;
+        weeklyEl.textContent = weeklyCost.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' });
+      } else {
+        weeklyEl.textContent = '–';
+      }
     }
 
-    actualizar();
+    // Asociar evento onchange
     tarifaEl.onchange = generoEl.onchange = edadEl.onchange = actualizar;
   </script>
 </body>
