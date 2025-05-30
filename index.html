@@ -60,7 +60,8 @@
     <select id="genero"></select>
     <select id="edad"></select>
     <div class="result" id="result">–</div>
-  </div>
+    <!-- NUEVO: prima semanal -->
+    <div class="result" id="weekly">–</div>  </div>
   <script>
     const data = [{"Tarifa": "T1", "Género": "Hombre", "RangoEdad": "00 - 04", "Precio": 16874.53663261538}, {"Tarifa": "T1", "Género": "Mujer", "RangoEdad": "00 - 04", "Precio": 16268.594957617019}, {"Tarifa": "T2", "Género": "Hombre", "RangoEdad": "00 - 04", "Precio": 9560.391286271773}, {"Tarifa": "T2", "Género": "Mujer", "RangoEdad": "00 - 04", "Precio": 8487.487162121695}, {"Tarifa": "T1", "Género": "Hombre", "RangoEdad": "05 - 14", "Precio": 14151.802220302878}, {"Tarifa": "T1", "Género": "Mujer", "RangoEdad": "05 - 14", "Precio": 14673.255893907677}, {"Tarifa": "T2", "Género": "Hombre", "RangoEdad": "05 - 14", "Precio": 8623.505186729732}, {"Tarifa": "T2", "Género": "Mujer", "RangoEdad": "05 - 14", "Precio": 7157.772709798316}, {"Tarifa": "T1", "Género": "Hombre", "RangoEdad": "15 - 19", "Precio": 13967.504586658586}, {"Tarifa": "T1", "Género": "Mujer", "RangoEdad": "15 - 19", "Precio": 15034.360782717002}, {"Tarifa": "T2", "Género": "Hombre", "RangoEdad": "15 - 19", "Precio": 8619.75511025416}, {"Tarifa": "T2", "Género": "Mujer", "RangoEdad": "15 - 19", "Precio": 8853.072770225892}, {"Tarifa": "T1", "Género": "Hombre", "RangoEdad": "20 - 24", "Precio": 15548.076770285676}, {"Tarifa": "T1", "Género": "Mujer", "RangoEdad": "20 - 24", "Precio": 26162.596999956866}, {"Tarifa": "T2", "Género": "Hombre", "RangoEdad": "20 - 24", "Precio": 9264.637303283604}, {"Tarifa": "T2", "Género": "Mujer", "RangoEdad": "20 - 24", "Precio": 12256.043814542596}, {"Tarifa": "T1", "Género": "Hombre", "RangoEdad": "25 - 29", "Precio": 17056.26512482541}, {"Tarifa": "T1", "Género": "Mujer", "RangoEdad": "25 - 29", "Precio": 29467.05166907092}, {"Tarifa": "T2", "Género": "Hombre", "RangoEdad": "25 - 29", "Precio": 10239.371516874613}, {"Tarifa": "T2", "Género": "Mujer", "RangoEdad": "25 - 29", "Precio": 16050.746973849935}, {"Tarifa": "T1", "Género": "Hombre", "RangoEdad": "30 - 34", "Precio": 19406.21599218232}, {"Tarifa": "T1", "Género": "Mujer", "RangoEdad": "30 - 34", "Precio": 32489.73648364612}, {"Tarifa": "T2", "Género": "Hombre", "RangoEdad": "30 - 34", "Precio": 11438.928476675557}, {"Tarifa": "T2", "Género": "Mujer", "RangoEdad": "30 - 34", "Precio": 17501.01881235817}, {"Tarifa": "T1", "Género": "Hombre", "RangoEdad": "35 - 39", "Precio": 22809.605172901764}, {"Tarifa": "T1", "Género": "Mujer", "RangoEdad": "35 - 39", "Precio": 36567.231090222136}, {"Tarifa": "T2", "Género": "Hombre", "RangoEdad": "35 - 39", "Precio": 12887.094644748218}, {"Tarifa": "T2", "Género": "Mujer", "RangoEdad": "35 - 39", "Precio": 17316.098057038937}, {"Tarifa": "T1", "Género": "Hombre", "RangoEdad": "40 - 44", "Precio": 27454.798562604603}, {"Tarifa": "T1", "Género": "Mujer", "RangoEdad": "40 - 44", "Precio": 41835.767962642254}, {"Tarifa": "T2", "Género": "Hombre", "RangoEdad": "40 - 44", "Precio": 14643.655192512011}, {"Tarifa": "T2", "Género": "Mujer", "RangoEdad": "40 - 44", "Precio": 17074.751697145966}, {"Tarifa": "T1", "Género": "Hombre", "RangoEdad": "45 - 49", "Precio": 33523.80336342852}, {"Tarifa": "T1", "Género": "Mujer", "RangoEdad": "45 - 49", "Precio": 48765.66849145942}, {"Tarifa": "T2", "Género": "Hombre", "RangoEdad": "45 - 49", "Precio": 16669.611481267897}, {"Tarifa": "T2", "Género": "Mujer", "RangoEdad": "45 - 49", "Precio": 19066.973185637282}, {"Tarifa": "T1", "Género": "Hombre", "RangoEdad": "50 - 54", "Precio": 40365.84220617719}, {"Tarifa": "T1", "Género": "Mujer", "RangoEdad": "50 - 54", "Precio": 56637.12435200001}, {"Tarifa": "T2", "Género": "Hombre", "RangoEdad": "50 - 54", "Precio": 19301.663460297157}, {"Tarifa": "T2", "Género": "Mujer", "RangoEdad": "50 - 54", "Precio": 22004.52626392206}, {"Tarifa": "T1", "Género": "Hombre", "RangoEdad": "55 - 59", "Precio": 51295.762109685136}, {"Tarifa": "T1", "Género": "Mujer", "RangoEdad": "55 - 59", "Precio": 65610.1550102326}, {"Tarifa": "T2", "Género": "Hombre", "RangoEdad": "55 - 59", "Precio": 21906.541468048883}, {"Tarifa": "T2", "Género": "Mujer", "RangoEdad": "55 - 59", "Precio": 24861.089010709726}, {"Tarifa": "T1", "Género": "Hombre", "RangoEdad": "60 - 64", "Precio": 66495.17963736765}, {"Tarifa": "T1", "Género": "Mujer", "RangoEdad": "60 - 64", "Precio": 78042.4680593512}, {"Tarifa": "T2", "Género": "Hombre", "RangoEdad": "60 - 64", "Precio": 23777.957082685825}, {"Tarifa": "T2", "Género": "Mujer", "RangoEdad": "60 - 64", "Precio": 27027.18889659468}, {"Tarifa": "T1", "Género": "Hombre", "RangoEdad": "65 - 69", "Precio": 86532.46245014932}, {"Tarifa": "T1", "Género": "Mujer", "RangoEdad": "65 - 69", "Precio": 87655.0030748293}, {"Tarifa": "T2", "Género": "Hombre", "RangoEdad": "65 - 69", "Precio": 26959.29036442463}, {"Tarifa": "T2", "Género": "Mujer", "RangoEdad": "65 - 69", "Precio": 30485.35991108451}, {"Tarifa": "T1", "Género": "Hombre", "RangoEdad": "70 - 74", "Precio": 110781.76966725649}, {"Tarifa": "T1", "Género": "Mujer", "RangoEdad": "70 - 74", "Precio": 121983.47028461553}, {"Tarifa": "T2", "Género": "Hombre", "RangoEdad": "70 - 74", "Precio": 31108.866351208817}, {"Tarifa": "T2", "Género": "Mujer", "RangoEdad": "70 - 74", "Precio": 34927.17849064457}, {"Tarifa": "T1", "Género": "Hombre", "RangoEdad": "75 - 79", "Precio": 144397.24923636363}, {"Tarifa": "T1", "Género": "Mujer", "RangoEdad": "75 - 79", "Precio": 140232.14383333334}, {"Tarifa": "T2", "Género": "Hombre", "RangoEdad": "75 - 79", "Precio": 40420.76364398173}, {"Tarifa": "T2", "Género": "Mujer", "RangoEdad": "75 - 79", "Precio": 40484.8332274163}, {"Tarifa": "T1", "Género": "Hombre", "RangoEdad": "80 - más", "Precio": 208040.33146666666}, {"Tarifa": "T1", "Género": "Mujer", "RangoEdad": "80 - más", "Precio": 166848.45983333336}, {"Tarifa": "T2", "Género": "Hombre", "RangoEdad": "80 - más", "Precio": 44936.32159053178}, {"Tarifa": "T2", "Género": "Mujer", "RangoEdad": "80 - más", "Precio": 47170.304536085976}];
     const tarifaEl = document.getElementById('tarifa');
@@ -76,13 +77,25 @@
     generos.forEach(v => generoEl.add(new Option(v, v)));
     edades .forEach(v => edadEl.add(new Option(v, v)));
 
-    function actualizar() {
-      const t = tarifaEl.value, g = generoEl.value, e = edadEl.value;
-      const found = data.find(d => d.Tarifa === t && d.Género === g && d.RangoEdad === e);
-      resultEl.textContent = found 
-        ? found.Precio.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })
-        : '–';
-    }
+  function actualizar() {
+  const t = tarifaEl.value, g = generoEl.value, e = edadEl.value;
+  const found = data.find(d => d.Tarifa === t && d.Género === g && d.RangoEdad === e);
+
+  // Prima anual
+  const annualText = found 
+    ? found.Precio.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })
+    : '–';
+  resultEl.textContent = annualText;
+
+  // Prima semanal = anual / 48
+  const weeklyEl = document.getElementById('weekly');
+  if (found) {
+    const weeklyCost = found.Precio / 48;
+    weeklyEl.textContent = weeklyCost.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' });
+  } else {
+    weeklyEl.textContent = '–';
+  }
+}
 
     tarifaEl.onchange = generoEl.onchange = edadEl.onchange = actualizar;
   </script>
