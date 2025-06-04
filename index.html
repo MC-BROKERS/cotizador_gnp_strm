@@ -133,6 +133,8 @@
     <select id="tarifa"></select>
     <select id="genero"></select>
     <input  id="edad" type="number" />
+	<button type="button" onclick="actualizar();"> Consultar </button>
+	  
 
     <p class="label">Prima Total GNP</p>
     <div class="result" id="result">–</div>
@@ -2995,7 +2997,7 @@
   
     // Asociar y disparar
     tarifaEl.onchange = generoEl.onchange = edadEl.onchange = actualizar;
-    actualizar();
+    //  actualizar(); 
 
     function encuentraRaango(edad)
     {
