@@ -3001,7 +3001,7 @@
   
   	  // Prima anual
       resultEl.textContent = found
-        ? found.Precio.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })
+        ? parseFloat(found.Precio).toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })
         : '$ 0.00';
   
       // Prima semanal
