@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cotizador GNP</title>
   <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
@@ -12,6 +13,7 @@
     --color-primary:#1d4ed8;
     --color-accent: #2563eb;
     --color-label:  #6b7280;
+	--color-result: #d16262;
     --radius:       12px;
     --gap:          1rem;
   }
@@ -83,6 +85,22 @@
     box-shadow: 0 0 0 3px rgba(37,99,235,0.2);
   }
 
+  input{
+    display: block;
+    width: 93%;
+    padding: 0.6rem;
+    margin-bottom: var(--gap);
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 1rem;
+    appearance: none;
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 10px 6px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  
+
   .result {
     margin-top: var(--gap);
     font-size: 1.5rem;
@@ -90,6 +108,15 @@
     color: var(--color-primary);
     transition: transform 0.2s ease, color 0.2s ease;
   }
+  
+    .result2 {
+    margin-top: var(--gap);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-result);
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+
 
   .result:hover {
     transform: scale(1.05);
@@ -105,13 +132,16 @@
 
     <select id="tarifa"></select>
     <select id="genero"></select>
-    <select id="edad"></select>
+    <input  id="edad" type="number" />
 
-    <p class="label">Prima Total</p>
+    <p class="label">Prima Total GNP</p>
     <div class="result" id="result">–</div>
 
     <p class="label">Prima Semanal</p>
     <div class="result" id="weekly">–</div>
+
+     <p class="label">Incremento 45% General de Salud</p>
+    <div class="result2" id="resultgral">–</div>
   </div>
 
   <script>
@@ -502,21 +532,2424 @@
   }
 ];
 
+
+    const tarifageneralsalud = [{
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "0",
+        "Precio": "25531.745"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "1",
+        "Precio": "24753.3705"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "2",
+        "Precio": "24183.216"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "3",
+        "Precio": "24143.544"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "4",
+        "Precio": "21575.275"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "5",
+        "Precio": "21540.4605"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "6",
+        "Precio": "21509.387"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "7",
+        "Precio": "21205.7715"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "8",
+        "Precio": "20801.613"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "9",
+        "Precio": "20450.916"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "10",
+        "Precio": "20153.6805"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "11",
+        "Precio": "19964.4265"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "12",
+        "Precio": "19956.698"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "13",
+        "Precio": "19953.537"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "14",
+        "Precio": "19955.161"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "15",
+        "Precio": "19961.8165"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "16",
+        "Precio": "19973.6775"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "17",
+        "Precio": "19991.005"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "18",
+        "Precio": "20014.002"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "19",
+        "Precio": "20040.8705"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "20",
+        "Precio": "22176.1695"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "21",
+        "Precio": "22207.0255"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "22",
+        "Precio": "22239.984"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "23",
+        "Precio": "22275.103"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "24",
+        "Precio": "22312.484"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "25",
+        "Precio": "24232.951"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "26",
+        "Precio": "24275.059"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "27",
+        "Precio": "24319.632"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "28",
+        "Precio": "24366.757"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "29",
+        "Precio": "24663.775"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "30",
+        "Precio": "27553.4365"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "31",
+        "Precio": "26941.145"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "32",
+        "Precio": "27140.0995"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "33",
+        "Precio": "28072.464"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "34",
+        "Precio": "28997.9555"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "35",
+        "Precio": "31582.479"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "36",
+        "Precio": "31647.033"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "37",
+        "Precio": "32336.5225"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "38",
+        "Precio": "33536.18"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "39",
+        "Precio": "34067.431"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "40",
+        "Precio": "38093.1965"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "41",
+        "Precio": "38169.452"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "42",
+        "Precio": "38869.454"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "43",
+        "Precio": "40336.419"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "44",
+        "Precio": "41086.2575"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "45",
+        "Precio": "46941.2415"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "46",
+        "Precio": "47030.953"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "47",
+        "Precio": "47123.55"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "48",
+        "Precio": "48473.181"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "49",
+        "Precio": "50260.915"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "50",
+        "Precio": "58208.771"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "51",
+        "Precio": "53996.753"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "52",
+        "Precio": "55944.8715"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "53",
+        "Precio": "57946.4515"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "54",
+        "Precio": "60001.4785"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "55",
+        "Precio": "67706.358"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "56",
+        "Precio": "71900.019"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "57",
+        "Precio": "75065.514"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "58",
+        "Precio": "75198.5805"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "59",
+        "Precio": "75335.5185"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "60",
+        "Precio": "91448.3535"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "61",
+        "Precio": "97117.694"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "62",
+        "Precio": "97918.442"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "63",
+        "Precio": "98071.823"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "64",
+        "Precio": "98231.961"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "65",
+        "Precio": "123544.7995"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "66",
+        "Precio": "126242.7855"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "67",
+        "Precio": "126425.1955"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "68",
+        "Precio": "126615.74"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "69",
+        "Precio": "126814.825"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "70",
+        "Precio": "151135.0225"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "71",
+        "Precio": "157195.805"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "72",
+        "Precio": "164514.796"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "73",
+        "Precio": "173091.285"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "74",
+        "Precio": "182924.576"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "75",
+        "Precio": "194013.973"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "76",
+        "Precio": "206358.7655"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "77",
+        "Precio": "219958.243"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "78",
+        "Precio": "234811.724"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "79",
+        "Precio": "250918.498"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "80",
+        "Precio": "268277.869"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "81",
+        "Precio": "286889.1265"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "82",
+        "Precio": "306751.5745"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "83",
+        "Precio": "327864.5315"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "84",
+        "Precio": "350227.2435"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "85",
+        "Precio": "373839.058"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "86",
+        "Precio": "398699.25"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "87",
+        "Precio": "424807.138"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "88",
+        "Precio": "452162.0115"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "89",
+        "Precio": "480763.1455"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "90",
+        "Precio": "510609.873"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "91",
+        "Precio": "541701.4835"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "92",
+        "Precio": "574037.281"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "93",
+        "Precio": "607616.5405"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "94",
+        "Precio": "642438.595"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "95",
+        "Precio": "678502.705"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "96",
+        "Precio": "715808.1745"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "97",
+        "Precio": "754354.351"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "98",
+        "Precio": "794140.466"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Hombre",
+        "Edad": "99",
+        "Precio": "835165.867"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "0",
+        "Precio": "24062.808"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "1",
+        "Precio": "24027.138"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "2",
+        "Precio": "23979.056"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "3",
+        "Precio": "23922.39"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "4",
+        "Precio": "20851.812"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "5",
+        "Precio": "19811.5675"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "6",
+        "Precio": "20398.4695"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "7",
+        "Precio": "21003.395"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "8",
+        "Precio": "21079.665"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "9",
+        "Precio": "21050.6505"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "10",
+        "Precio": "21041.443"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "11",
+        "Precio": "21056.175"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "12",
+        "Precio": "21088.9595"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "13",
+        "Precio": "21130.589"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "14",
+        "Precio": "21180.2225"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "15",
+        "Precio": "21262.8725"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "16",
+        "Precio": "21367.9685"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "17",
+        "Precio": "21493.1035"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "18",
+        "Precio": "21636.03"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "19",
+        "Precio": "21794.3845"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "20",
+        "Precio": "36959.8765"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "21",
+        "Precio": "37129.7005"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "22",
+        "Precio": "37307.398"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "23",
+        "Precio": "37490.823"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "24",
+        "Precio": "37677.8005"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "25",
+        "Precio": "41702.9425"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "26",
+        "Precio": "41890.529"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "27",
+        "Precio": "42057.656"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "28",
+        "Precio": "42187.46"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "29",
+        "Precio": "42281.2605"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "30",
+        "Precio": "47230.7485"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "31",
+        "Precio": "46116.612"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "32",
+        "Precio": "46130.6045"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "33",
+        "Precio": "46129.2415"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "34",
+        "Precio": "46115.2635"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "35",
+        "Precio": "52183.3105"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "36",
+        "Precio": "52152.3385"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "37",
+        "Precio": "52116.9875"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "38",
+        "Precio": "52080.0125"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "39",
+        "Precio": "52044.154"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "40",
+        "Precio": "59425.205"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "41",
+        "Precio": "59399.8155"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "42",
+        "Precio": "59383.793"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "43",
+        "Precio": "59375.122"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "44",
+        "Precio": "60568.907"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "45",
+        "Precio": "68527.145"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "46",
+        "Precio": "68631.226"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "47",
+        "Precio": "68738.8595"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "48",
+        "Precio": "69404.047"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "49",
+        "Precio": "71882.503"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "50",
+        "Precio": "79505.037"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "51",
+        "Precio": "77199.943"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "52",
+        "Precio": "80050.063"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "53",
+        "Precio": "82269.839"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "54",
+        "Precio": "82405.9215"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "55",
+        "Precio": "89435.71"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "56",
+        "Precio": "92862.8285"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "57",
+        "Precio": "95309.5585"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "58",
+        "Precio": "95460.054"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "59",
+        "Precio": "95614.131"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "60",
+        "Precio": "108234.2205"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "61",
+        "Precio": "112526.206"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "62",
+        "Precio": "115373.861"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "63",
+        "Precio": "115544.4245"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "64",
+        "Precio": "115722.6295"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "65",
+        "Precio": "126870.563"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "66",
+        "Precio": "127065.153"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "67",
+        "Precio": "127268.53"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "68",
+        "Precio": "127481.129"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "69",
+        "Precio": "127703.3995"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "70",
+        "Precio": "171355.2725"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "71",
+        "Precio": "174356.236"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "72",
+        "Precio": "178031.87"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "73",
+        "Precio": "182372.88"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "74",
+        "Precio": "187369.899"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "75",
+        "Precio": "193013.5745"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "76",
+        "Precio": "199294.5395"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "77",
+        "Precio": "206203.456"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "78",
+        "Precio": "213730.9715"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "79",
+        "Precio": "221867.748"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "80",
+        "Precio": "230604.433"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "81",
+        "Precio": "239931.6595"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "82",
+        "Precio": "249840.0895"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "83",
+        "Precio": "260320.385"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "84",
+        "Precio": "271363.179"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "85",
+        "Precio": "282959.1045"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "86",
+        "Precio": "295098.838"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "87",
+        "Precio": "307773.0415"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "88",
+        "Precio": "320972.3335"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "89",
+        "Precio": "334687.376"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "90",
+        "Precio": "348908.8165"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "91",
+        "Precio": "363627.3315"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "92",
+        "Precio": "378833.5105"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "93",
+        "Precio": "394518.059"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "94",
+        "Precio": "410671.6245"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "95",
+        "Precio": "427284.8255"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "96",
+        "Precio": "444348.324"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "97",
+        "Precio": "461852.782"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "98",
+        "Precio": "479788.818"
+    },
+    {
+        "Tarifa": "T1",
+        "Género": "Mujer",
+        "Edad": "99",
+        "Precio": "498147.123"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "0",
+        "Precio": "11118.76143"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "1",
+        "Precio": "10876.88747"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "2",
+        "Precio": "10653.48188"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "3",
+        "Precio": "10448.35996"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "4",
+        "Precio": "10261.35755"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "5",
+        "Precio": "10092.28998"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "6",
+        "Precio": "9940.952027"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "7",
+        "Precio": "9807.179539"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "8",
+        "Precio": "9690.808351"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "9",
+        "Precio": "9591.653778"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "10",
+        "Precio": "9509.510617"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "11",
+        "Precio": "9446.718193"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "12",
+        "Precio": "9406.436648"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "13",
+        "Precio": "9389.815124"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "14",
+        "Precio": "9398.002763"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "15",
+        "Precio": "9432.148709"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "16",
+        "Precio": "9493.402103"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "17",
+        "Precio": "9582.932608"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "18",
+        "Precio": "9701.848326"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "19",
+        "Precio": "9840.668832"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "20",
+        "Precio": "9989.33913"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "21",
+        "Precio": "10148.24911"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "22",
+        "Precio": "10317.78865"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "23",
+        "Precio": "10498.30661"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "24",
+        "Precio": "10690.21339"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "25",
+        "Precio": "10893.85784"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "26",
+        "Precio": "11109.62985"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "27",
+        "Precio": "11337.9193"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "28",
+        "Precio": "11579.07504"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "29",
+        "Precio": "11833.50748"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "30",
+        "Precio": "12101.56546"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "31",
+        "Precio": "12384.21345"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "32",
+        "Precio": "12679.74825"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "33",
+        "Precio": "12985.7895"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "34",
+        "Precio": "13302.7476"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "35",
+        "Precio": "13630.9714"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "36",
+        "Precio": "13970.83026"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "37",
+        "Precio": "14322.69356"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "38",
+        "Precio": "14686.93066"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "39",
+        "Precio": "15063.89041"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "40",
+        "Precio": "15453.94217"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "41",
+        "Precio": "15857.47584"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "42",
+        "Precio": "16274.84025"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "43",
+        "Precio": "16706.40478"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "44",
+        "Precio": "17152.51828"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "45",
+        "Precio": "17613.59115"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "46",
+        "Precio": "18089.93119"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "47",
+        "Precio": "18581.94882"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "48",
+        "Precio": "19090.01341"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "49",
+        "Precio": "19614.45327"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "50",
+        "Precio": "20155.6583"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "51",
+        "Precio": "20713.99786"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "52",
+        "Precio": "21289.84133"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "53",
+        "Precio": "21883.53754"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "54",
+        "Precio": "22495.45587"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "55",
+        "Precio": "23125.96568"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "56",
+        "Precio": "23775.43634"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "57",
+        "Precio": "24444.25774"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "58",
+        "Precio": "25132.73768"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "59",
+        "Precio": "25841.30709"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "60",
+        "Precio": "26570.2943"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "61",
+        "Precio": "27320.04815"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "62",
+        "Precio": "28080.47262"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "63",
+        "Precio": "28874.36585"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "64",
+        "Precio": "29703.24637"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "65",
+        "Precio": "30568.7558"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "66",
+        "Precio": "31472.59734"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "67",
+        "Precio": "32416.57678"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "68",
+        "Precio": "33402.62304"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "69",
+        "Precio": "34432.76764"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "70",
+        "Precio": "35509.18574"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "71",
+        "Precio": "36634.13459"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "72",
+        "Precio": "37810.03559"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "73",
+        "Precio": "39039.4538"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "74",
+        "Precio": "40325.07738"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "75",
+        "Precio": "41669.75867"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "76",
+        "Precio": "43076.51417"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "77",
+        "Precio": "44548.56559"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "78",
+        "Precio": "46089.25774"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "79",
+        "Precio": "47702.20222"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "80",
+        "Precio": "49391.1953"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "81",
+        "Precio": "51160.23847"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "82",
+        "Precio": "53013.57943"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "83",
+        "Precio": "54955.75321"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "84",
+        "Precio": "56991.54105"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "85",
+        "Precio": "59125.99098"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "86",
+        "Precio": "61364.49986"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "87",
+        "Precio": "63712.79287"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "88",
+        "Precio": "66176.90302"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "89",
+        "Precio": "68763.27372"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "90",
+        "Precio": "71478.77929"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "91",
+        "Precio": "74330.66344"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "92",
+        "Precio": "77326.64184"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "93",
+        "Precio": "80474.98421"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "94",
+        "Precio": "83784.3912"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "95",
+        "Precio": "87264.22011"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "96",
+        "Precio": "90924.3823"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "97",
+        "Precio": "94775.40473"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "98",
+        "Precio": "98828.61466"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Hombre",
+        "Edad": "99",
+        "Precio": "103095.9755"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "0",
+        "Precio": "9952.40241"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "1",
+        "Precio": "9775.557603"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "2",
+        "Precio": "9533.006475"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "3",
+        "Precio": "9244.920579"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "4",
+        "Precio": "8931.49199"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "5",
+        "Precio": "8612.892259"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "6",
+        "Precio": "8309.333982"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "7",
+        "Precio": "8040.968191"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "8",
+        "Precio": "7828.00748"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "9",
+        "Precio": "7690.623402"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "10",
+        "Precio": "7648.98751"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "11",
+        "Precio": "7723.291878"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "12",
+        "Precio": "7884.890028"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "13",
+        "Precio": "8088.801243"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "14",
+        "Precio": "8330.7778"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "15",
+        "Precio": "8713.585862"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "16",
+        "Precio": "9192.65512"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "17",
+        "Precio": "9757.725375"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "18",
+        "Precio": "10398.47487"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "19",
+        "Precio": "11104.66391"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "20",
+        "Precio": "11865.97075"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "21",
+        "Precio": "12672.13519"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "22",
+        "Precio": "13512.87649"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "23",
+        "Precio": "14377.87291"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "24",
+        "Precio": "15256.90529"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "25",
+        "Precio": "16139.63134"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "26",
+        "Precio": "17015.79086"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "27",
+        "Precio": "17797.53601"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "28",
+        "Precio": "18409.35174"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "29",
+        "Precio": "18856.9427"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "30",
+        "Precio": "19147.98354"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "31",
+        "Precio": "19321.09363"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "32",
+        "Precio": "19415.73372"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "33",
+        "Precio": "19444.3802"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "34",
+        "Precio": "19419.42739"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "35",
+        "Precio": "19353.3517"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "36",
+        "Precio": "19258.56797"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "37",
+        "Precio": "19147.53209"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "38",
+        "Precio": "19032.67941"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "39",
+        "Precio": "18926.4453"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "40",
+        "Precio": "18841.2446"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "41",
+        "Precio": "18789.57423"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "42",
+        "Precio": "18783.808"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "43",
+        "Precio": "18814.85536"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "44",
+        "Precio": "19329.75324"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "45",
+        "Precio": "19863.91977"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "46",
+        "Precio": "20417.2934"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "47",
+        "Precio": "20989.83308"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "48",
+        "Precio": "21581.43621"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "49",
+        "Precio": "22192.1028"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "50",
+        "Precio": "22821.77127"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "51",
+        "Precio": "23470.33903"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "52",
+        "Precio": "24137.80608"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "53",
+        "Precio": "24824.09034"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "54",
+        "Precio": "25529.15076"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "55",
+        "Precio": "26252.92579"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "56",
+        "Precio": "26995.35386"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "57",
+        "Precio": "27756.39394"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "58",
+        "Precio": "28535.98446"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "59",
+        "Precio": "29334.06385"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "60",
+        "Precio": "30150.59109"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "61",
+        "Precio": "30985.5046"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "62",
+        "Precio": "31830.57572"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "63",
+        "Precio": "32713.30176"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "64",
+        "Precio": "33635.38594"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "65",
+        "Precio": "34598.71612"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "66",
+        "Precio": "35605.28278"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "67",
+        "Precio": "36657.11744"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "68",
+        "Precio": "37756.43631"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "69",
+        "Precio": "38905.55819"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "70",
+        "Precio": "40106.90449"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "71",
+        "Precio": "41362.26048"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "72",
+        "Precio": "42675.29931"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "73",
+        "Precio": "44048.91437"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "74",
+        "Precio": "45486.1837"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "75",
+        "Precio": "46990.32902"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "76",
+        "Precio": "48564.79775"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "77",
+        "Precio": "50213.20149"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "78",
+        "Precio": "51939.35701"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "79",
+        "Precio": "53747.28633"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "80",
+        "Precio": "55641.27821"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "81",
+        "Precio": "57625.84714"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "82",
+        "Precio": "59705.73332"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "83",
+        "Precio": "61886.02582"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "84",
+        "Precio": "64172.08046"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "85",
+        "Precio": "66569.51984"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "86",
+        "Precio": "69081.66824"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "87",
+        "Precio": "71715.58471"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "88",
+        "Precio": "74478.02043"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "89",
+        "Precio": "77376.09601"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "90",
+        "Precio": "80417.46553"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "91",
+        "Precio": "83610.17301"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "92",
+        "Precio": "86962.837"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "93",
+        "Precio": "90484.58909"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "94",
+        "Precio": "94185.17646"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "95",
+        "Precio": "98074.96193"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "96",
+        "Precio": "102165.006"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "97",
+        "Precio": "106467.0463"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "98",
+        "Precio": "110993.6208"
+    },
+    {
+        "Tarifa": "T2",
+        "Género": "Mujer",
+        "Edad": "99",
+        "Precio": "115758.1499"
+    }
+];
     
     const tarifaEl = document.getElementById('tarifa');
     const generoEl = document.getElementById('genero');
     const edadEl   = document.getElementById('edad');
     const resultEl = document.getElementById('result');
     const weeklyEl = document.getElementById('weekly');
+    const resultElPreviuos = document.getElementById('resultgral');
   
     // Poblar dropdowns
     const tarifas = [...new Set(data.map(d => d.Tarifa))];
     const generos = [...new Set(data.map(d => d['Género']))];     // nota el uso de ['Género']
-    const edades  = [...new Set(data.map(d => d.RangoEdad))];
+    //const edades  = [...new Set(data.map(d => d.RangoEdad))];
   
     tarifas.forEach(v => tarifaEl.add(new Option(v, v)));
     generos.forEach(v => generoEl.add(new Option(v, v)));
-    edades .forEach(v => edadEl.add(new Option(v, v)));
+    //edades .forEach(v => edadEl.add(new Option(v, v)));
   
     // Selección inicial y primer render
     tarifaEl.selectedIndex = generoEl.selectedIndex = edadEl.selectedIndex = 0;
@@ -527,26 +2960,63 @@
             e = edadEl.value;
   
       // acceso seguro a la propiedad acentuada
+
+      const rango = encuentraRaango(e);
+		//alert( rango );
       const found = data.find(d =>
         d.Tarifa    === t &&
         d['Género'] === g &&
-        d.RangoEdad === e
+        d.RangoEdad === rango
+      );
+
+      const foundnetarifa = tarifageneralsalud.find(d =>
+        d.Tarifa    === t &&
+        d['Género'] === g &&
+        d.Edad === e
       );
   
-      // Prima anual
+  	  // Prima anual
       resultEl.textContent = found
         ? found.Precio.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })
-        : '–';
+        : '$ 0.00';
   
       // Prima semanal
       weeklyEl.textContent = found
         ? (found.Precio / 48).toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })
-        : '–';
+        : '$ 0.00';
+
+      // Prima anual de tarifa nueva
+      resultElPreviuos.textContent = foundnetarifa
+        ? parseFloat(foundnetarifa.Precio).toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })
+        : '$ 0.00';
+       
+
     }
   
     // Asociar y disparar
     tarifaEl.onchange = generoEl.onchange = edadEl.onchange = actualizar;
     actualizar();
+
+    function encuentraRaango(edad)
+    {
+	//alert( edad );
+      if (edad < 5) return "00 - 04";
+      if (edad < 15) return "05 - 14";
+      if (edad < 20) return "15 - 19";
+      if (edad < 25) return "20 - 24";
+      if (edad < 30) return "25 - 29";
+      if (edad < 35) return "30 - 34";
+      if (edad < 40) return "35 - 39";
+      if (edad < 45) return "40 - 44";
+      if (edad < 50) return "45 - 49";
+      if (edad < 55) return "50 - 54";
+      if (edad < 60) return "55 - 59";
+      if (edad < 65) return "60 - 64";
+      if (edad < 70) return "65 - 69";
+      if (edad < 75) return "70 - 74";
+      if (edad < 80) return "75 - 79";
+	  if(edad < 99 )  return "80 - más";
+    }
   </script>
 </body>
 </html>
