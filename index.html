@@ -52,12 +52,12 @@
     }
 
     h1 {
-      font-size: 1.75rem;
+      font-size: 1.25rem;
       margin: 0.25rem 0 var(--gap);
       color: var(--color-primary);
     }
     h2 {
-      font-size: 1.5rem;
+      font-size: 1rem;
       margin: 0;
       margin-bottom: var(--gap);
       color: var(--color-primary);
@@ -130,7 +130,7 @@
       margin-top: var(--gap);
       font-size: 1.5rem;
       font-weight: 600;
-      color: var(--color-primary);
+      color: var(--color-result);
       transition: transform 0.2s ease, color 0.2s ease;
     }
     .result2:hover {
@@ -147,7 +147,7 @@
     <h1>Tarifa Gastos Médicos</h1>
     <h2>GNP 2025</h2>
 
-    <!-- 1) Labels + dropdowns -->
+    <!-- Dropdowns -->
     <label class="label" for="tarifa">Tarifa</label>
     <select id="tarifa"></select>
 
@@ -161,14 +161,21 @@
       Consultar
     </button>
 
-    <label class="label">Prima Total</label>
-    <div class="result" id="result">–</div>
+    <!-- Al inicio, estos labels y resultados están ocultos -->
+    <label id="labelResult" class="label" style="display: none;">
+      Prima Total GNP
+    </label>
+    <div id="result" class="result" style="display: none;">–</div>
 
-    <label class="label">Descuento Semanal</label>
-    <div class="result" id="weekly">–</div>
+    <label id="labelWeekly" class="label" style="display: none;">
+      Prima Semanal GNP
+    </label>
+    <div id="weekly" class="result" style="display: none;">–</div>
 
-    <label class="label">Suma Asegurada</label>
-    <div class="result2" id="resultgral">–</div>
+    <label id="labelSuma" class="label" style="display: none;">
+      Suma Asegurada
+    </label>
+    <div id="resultgral" class="result2" style="display: none;">–</div>
   </div>
 
   <script>
@@ -623,89 +630,107 @@
     }
 ];
     
-  /*———————————————————————————
-    2) Referencias al DOM
-  ————————————————————————————*/
-  const tarifaEl     = document.getElementById('tarifa');
-  const generoEl     = document.getElementById('genero');
-  const rangoEdadEl  = document.getElementById('rangoEdad');
-  const resultEl     = document.getElementById('result');
-  const weeklyEl     = document.getElementById('weekly');
-  const resultElGral = document.getElementById('resultgral');
-  const btnConsultar = document.querySelector('.myButton');
 
-  /*———————————————————————————
-    3) Poblar los dropdowns solo una vez
-  ————————————————————————————*/
-  function poblarDropdowns() {
-    // Tarifas únicas
-    const tarifas = [...new Set(data.map(d => d.Tarifa))];
-    tarifas.forEach(v => tarifaEl.add(new Option(v, v)));
 
-    // Géneros únicos
-    const generos = [...new Set(data.map(d => d['Género']))];
-    generos.forEach(v => generoEl.add(new Option(v, v)));
+    /*——————————————————————————————————————————————
+      2) Referencias al DOM
+    ——————————————————————————————————————————————*/
+    const tarifaEl     = document.getElementById('tarifa');
+    const generoEl     = document.getElementById('genero');
+    const rangoEdadEl  = document.getElementById('rangoEdad');
+    const resultEl     = document.getElementById('result');
+    const weeklyEl     = document.getElementById('weekly');
+    const resultElGral = document.getElementById('resultgral');
 
-    // Rangos de edad únicos
-    const rangos = [...new Set(data.map(d => d.RangoEdad))];
-    rangos.forEach(v => rangoEdadEl.add(new Option(v, v)));
-  }
+    const labelResult  = document.getElementById('labelResult');
+    const labelWeekly  = document.getElementById('labelWeekly');
+    const labelSuma    = document.getElementById('labelSuma');
 
-  /*———————————————————————————
-    4) Función que se llama al hacer clic en “Consultar”
-  ————————————————————————————*/
-  function actualizar() {
-    const t = tarifaEl.value;
-    const g = generoEl.value;
-    const r = rangoEdadEl.value; // El usuario ya selecciona el rango directamente
+    /*——————————————————————————————————————————————
+      3) Poblar dropdowns de “Tarifa”, “Género” y “RangoEdad”
+    ——————————————————————————————————————————————*/
+    function poblarDropdowns() {
+      // a) Tarifas únicas
+      const tarifas = [...new Set(data.map(d => d.Tarifa))];
+      tarifas.forEach(v => tarifaEl.add(new Option(v, v)));
 
-    // Buscamos en data el objeto que coincide
-    const found = data.find(d =>
-      d.Tarifa    === t &&
-      d['Género'] === g &&
-      d.RangoEdad === r
-    );
+      // b) Géneros únicos
+      const generos = [...new Set(data.map(d => d['Género']))];
+      generos.forEach(v => generoEl.add(new Option(v, v)));
 
-    // Mostrar Prima total y Semanal
-    if (found) {
-      const precioNum = parseFloat(found.Precio);
-      resultEl.textContent = precioNum.toLocaleString('es-MX', {
-        style: 'currency',
-        currency: 'MXN'
-      });
-      weeklyEl.textContent = (precioNum / 48).toLocaleString('es-MX', {
-        style: 'currency',
-        currency: 'MXN'
-      });
-    } else {
-      resultEl.textContent = '$ 0.00';
-      weeklyEl.textContent = '$ 0.00';
+      // c) Rangos de edad únicos
+      const rangos = [...new Set(data.map(d => d.RangoEdad))];
+      rangos.forEach(v => rangoEdadEl.add(new Option(v, v)));
     }
 
-    // Mostrar SumaAsegurada
-    if (found && found.SumaAsegurada) {
-      resultElGral.textContent = found.SumaAsegurada;
-    } else {
-      resultElGral.textContent = '–';
+    /*——————————————————————————————————————————————
+      4) Función que se llama al hacer clic en “Consultar”
+      – Muestra etiquetas y valores solo en este momento.
+    ——————————————————————————————————————————————*/
+    function actualizar() {
+      const t = tarifaEl.value;
+      const g = generoEl.value;
+      const r = rangoEdadEl.value; // El usuario ya selecciona el rango directamente
+
+      // Buscamos en data el objeto que coincide
+      const found = data.find(d =>
+        d.Tarifa    === t &&
+        d['Género'] === g &&
+        d.RangoEdad === r
+      );
+
+      /*— Desocultamos las etiquetas y contenedores —*/
+      labelResult.style.display = 'block';
+      resultEl.style.display    = 'block';
+      labelWeekly.style.display = 'block';
+      weeklyEl.style.display    = 'block';
+      labelSuma.style.display   = 'block';
+      resultElGral.style.display= 'block';
+
+      // 1) Mostrar Prima total (Precio) y Semanal
+      if (found) {
+        const precioNum = parseFloat(found.Precio);
+        resultEl.textContent = precioNum.toLocaleString('es-MX', {
+          style: 'currency',
+          currency: 'MXN'
+        });
+        weeklyEl.textContent = (precioNum / 48).toLocaleString('es-MX', {
+          style: 'currency',
+          currency: 'MXN'
+        });
+      } else {
+        resultEl.textContent = '$ 0.00';
+        weeklyEl.textContent = '$ 0.00';
+      }
+
+      // 2) Mostrar SumaAsegurada
+      if (found && found.SumaAsegurada) {
+        resultElGral.textContent = found.SumaAsegurada;
+      } else {
+        resultElGral.textContent = '–';
+      }
     }
-  }
 
-  /*———————————————————————————
-    5) Inicialización al cargar la página
-       – Solo pobla dropdowns, NO llama a actualizar()
-       – Deja los DIVs de resultado vacíos
-  ————————————————————————————*/
-  poblarDropdowns();
+    /*——————————————————————————————————————————————
+      5) Inicialización al cargar la página
+      – Sólo poblamos los dropdowns y dejamos todo oculto.
+    ——————————————————————————————————————————————*/
+    poblarDropdowns();
 
-  // Vaciar resultados al inicio (puede omitirse si ya vienen vacíos en HTML)
-  resultEl.textContent     = '';
-  weeklyEl.textContent     = '';
-  resultElGral.textContent = '';
+    // Selección inicial de índices
+    tarifaEl.selectedIndex    = 0;
+    generoEl.selectedIndex    = 0;
+    rangoEdadEl.selectedIndex = 0;
 
-  // Asignar el click del botón a la función actualizar()
-  btnConsultar.addEventListener('click', actualizar);
+    // Nos aseguramos de que TODO esté oculto hasta el click:
+    labelResult.style.display  = 'none';
+    resultEl.style.display     = 'none';
+    labelWeekly.style.display  = 'none';
+    weeklyEl.style.display     = 'none';
+    labelSuma.style.display    = 'none';
+    resultElGral.style.display = 'none';
 
-  // Ya no vinculamos ningún evento "change" a los <select>
-  // Así no se mostrará nada hasta que el usuario presione el botón.
-
-</script>
+    // No llamamos a actualizar() aquí: sólo se mostrará tras clic.
+  </script>
+</body>
+</html> 
