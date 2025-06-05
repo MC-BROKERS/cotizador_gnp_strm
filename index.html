@@ -623,84 +623,89 @@
     }
 ];
     
-    const tarifaEl     = document.getElementById('tarifa');
-    const generoEl     = document.getElementById('genero');
-    const rangoEdadEl  = document.getElementById('rangoEdad');
-    const resultEl     = document.getElementById('result');
-    const weeklyEl     = document.getElementById('weekly');
-    const resultElGral = document.getElementById('resultgral');
+  /*———————————————————————————
+    2) Referencias al DOM
+  ————————————————————————————*/
+  const tarifaEl     = document.getElementById('tarifa');
+  const generoEl     = document.getElementById('genero');
+  const rangoEdadEl  = document.getElementById('rangoEdad');
+  const resultEl     = document.getElementById('result');
+  const weeklyEl     = document.getElementById('weekly');
+  const resultElGral = document.getElementById('resultgral');
+  const btnConsultar = document.querySelector('.myButton');
 
-    /*——————————————————————————————————————————————
-      4) Poblar dropdowns de “Tarifa”, “Género” y “RangoEdad”
-    ——————————————————————————————————————————————*/
-    function poblarDropdowns() {
-      // a) Tarifas únicas
-      const tarifas = [...new Set(data.map(d => d.Tarifa))];
-      tarifas.forEach(v => tarifaEl.add(new Option(v, v)));
+  /*———————————————————————————
+    3) Poblar los dropdowns solo una vez
+  ————————————————————————————*/
+  function poblarDropdowns() {
+    // Tarifas únicas
+    const tarifas = [...new Set(data.map(d => d.Tarifa))];
+    tarifas.forEach(v => tarifaEl.add(new Option(v, v)));
 
-      // b) Géneros únicos
-      const generos = [...new Set(data.map(d => d['Género']))];
-      generos.forEach(v => generoEl.add(new Option(v, v)));
+    // Géneros únicos
+    const generos = [...new Set(data.map(d => d['Género']))];
+    generos.forEach(v => generoEl.add(new Option(v, v)));
 
-      // c) Rangos de edad únicos
-      const rangos = [...new Set(data.map(d => d.RangoEdad))];
-      rangos.forEach(v => rangoEdadEl.add(new Option(v, v)));
+    // Rangos de edad únicos
+    const rangos = [...new Set(data.map(d => d.RangoEdad))];
+    rangos.forEach(v => rangoEdadEl.add(new Option(v, v)));
+  }
+
+  /*———————————————————————————
+    4) Función que se llama al hacer clic en “Consultar”
+  ————————————————————————————*/
+  function actualizar() {
+    const t = tarifaEl.value;
+    const g = generoEl.value;
+    const r = rangoEdadEl.value; // El usuario ya selecciona el rango directamente
+
+    // Buscamos en data el objeto que coincide
+    const found = data.find(d =>
+      d.Tarifa    === t &&
+      d['Género'] === g &&
+      d.RangoEdad === r
+    );
+
+    // Mostrar Prima total y Semanal
+    if (found) {
+      const precioNum = parseFloat(found.Precio);
+      resultEl.textContent = precioNum.toLocaleString('es-MX', {
+        style: 'currency',
+        currency: 'MXN'
+      });
+      weeklyEl.textContent = (precioNum / 48).toLocaleString('es-MX', {
+        style: 'currency',
+        currency: 'MXN'
+      });
+    } else {
+      resultEl.textContent = '$ 0.00';
+      weeklyEl.textContent = '$ 0.00';
     }
 
-    /*——————————————————————————————————————————————
-      5) Función para volver a calcular todo
-    ——————————————————————————————————————————————*/
-    function actualizar() {
-      const t = tarifaEl.value;
-      const g = generoEl.value;
-      const r = rangoEdadEl.value; // ya es el RangoEdad directamente
-
-      // 1) Buscamos el objeto que coincide en data
-      const found = data.find(d =>
-        d.Tarifa    === t &&
-        d['Género'] === g &&
-        d.RangoEdad === r
-      );
-
-      // 2) Mostrar Prima total (Precio) y Semanal
-      if (found) {
-        const precioNum = parseFloat(found.Precio);
-        resultEl.textContent = precioNum.toLocaleString('es-MX', {
-          style: 'currency',
-          currency: 'MXN'
-        });
-        weeklyEl.textContent = (precioNum / 48).toLocaleString('es-MX', {
-          style: 'currency',
-          currency: 'MXN'
-        });
-      } else {
-        resultEl.textContent = '$ 0.00';
-        weeklyEl.textContent = '$ 0.00';
-      }
-
-      // 3) Mostrar SumaAsegurada (propiedad nueva)
-      if (found && found.SumaAsegurada) {
-        resultElGral.textContent = found.SumaAsegurada;
-      } else {
-        resultElGral.textContent = '–';
-      }
+    // Mostrar SumaAsegurada
+    if (found && found.SumaAsegurada) {
+      resultElGral.textContent = found.SumaAsegurada;
+    } else {
+      resultElGral.textContent = '–';
     }
+  }
 
+  /*———————————————————————————
+    5) Inicialización al cargar la página
+       – Solo pobla dropdowns, NO llama a actualizar()
+       – Deja los DIVs de resultado vacíos
+  ————————————————————————————*/
+  poblarDropdowns();
 
-    poblarDropdowns();
+  // Vaciar resultados al inicio (puede omitirse si ya vienen vacíos en HTML)
+  resultEl.textContent     = '';
+  weeklyEl.textContent     = '';
+  resultElGral.textContent = '';
 
-    // Selección inicial de índices
-    tarifaEl.selectedIndex    = 0;
-    generoEl.selectedIndex    = 0;
-    rangoEdadEl.selectedIndex = 0;
+  // Asignar el click del botón a la función actualizar()
+  btnConsultar.addEventListener('click', actualizar);
 
-    // Realizar el primer cálculo con los valores por defecto
-    actualizar();
+  // Ya no vinculamos ningún evento "change" a los <select>
+  // Así no se mostrará nada hasta que el usuario presione el botón.
 
-    // Asociar eventos onchange a cada <select>
-    tarifaEl.addEventListener('change', actualizar);
-    generoEl.addEventListener('change', actualizar);
-    rangoEdadEl.addEventListener('change', actualizar);
-  </script>
-</body>
-</html>
+</script>
