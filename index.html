@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cotizador — Uso interno MCB</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Paleta aproximada MCB (ajustada al logo): */
+    :root{
+      --mcb-blue:#0057A4;   /* botón principal */
+      --mcb-green:#2FA24A;  /* acentos */
+      --mcb-lime:#9CCB3B;   /* acentos suaves */
+      --mcb-pink:#E9407A;   /* acento secundario */
+      --mcb-gray:#5B5C5E;   /* texto neutro */
+      --bg:#0B0F1A;
+      --surface:#0E1522;
+      --surface-2:#0F1828;
+      --stroke:#1E2A3C;
+    }
+    body{background:var(--bg);color:#e5e7eb;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto}
+    .card{background:var(--surface);border:1px solid var(--stroke);border-radius:16px;padding:1rem}
+    .input,select{background:var(--surface-2);border:1px solid var(--stroke);border-radius:.7rem;padding:.7rem .85rem;color:#e5e7eb}
+    .btn{background:var(--mcb-blue);border:1px solid #044b8f;border-radius:.9rem;padding:.75rem 1.15rem;color:#fff;font-weight:600;box-shadow:0 0 0 0 rgba(0,0,0,0)}
+    .btn:hover{filter:brightness(1.06)}
+    .btn:focus{outline:3px solid color-mix(in oklab, var(--mcb-blue) 60%, white);outline-offset:2px}
+    .btn:disabled{opacity:.6;cursor:not-allowed}
+    .label{font-size:.85rem;color:#cfd7e3}
+    .money{font-variant-numeric:tabular-nums}
+    .kpi{background:var(--surface-2);border:1px solid var(--stroke);border-radius:14px;padding:.95rem}
+    .accent{color:var(--mcb-lime)}
+  </style>
+</head>
+<body>
+  <div class="max-w-3xl mx-auto p-4">
+    <header class="mb-4">
+      <h1 class="text-2xl font-semibold">Cotizador — Uso interno MCB</h1>
+    </header>
+
+    <!-- Fila 1: Empresa + Plan (solo STRM) -->
+    <section class="card grid md:grid-cols-3 gap-4 mb-3">
+      <div>
+        <label class="label">Empresa</label>
+        <select id="cliente" class="input w-full">
+          <option value="BIMBO">BIMBO</option>
+          <option value="STRM">STRM</option>
+        </select>
+      </div>
+      <div id="plan-wrap" style="display:none">
+        <label class="label">Plan (STRM)</label>
+        <select id="plan" class="input w-full">
+          <option value="Plan600">Tarifa Plan 600</option>
+          <option value="OtrosPlanes">Tarifa Otros Planes</option>
+        </select>
+      </div>
+      <div class="hidden md:block"></div>
+    </section>
+
+    <!-- Fila 2: Género + Edad -->
+    <section class="card grid md:grid-cols-3 gap-4 mb-3">
+      <div>
+        <label class="label">Género</label>
+        <select id="genero" class="input w-full">
+          <option value="H">Hombre</option>
+          <option value="M">Mujer</option>
+        </select>
+      </div>
+      <div>
+        <label class="label">Edad</label>
+        <input id="edad" type="number" min="0" max="120" value="25" class="input w-full"/>
+      </div>
+      <div class="hidden md:block"></div>
+    </section>
+
+    <!-- Fila 3: Botón Consultar -->
+    <section class="card mb-4">
+      <button id="btn-consultar" class="btn">Consultar</button>
+      <p id="status" class="text-xs text-amber-300 mt-2 hidden"></p>
+    </section>
+
+    <!-- Resultado -->
+    <section class="grid gap-4">
+      <div class="kpi">
+        <div class="flex justify-between"><span>Prima Total Anual</span><strong id="total" class="money">—</strong></div>
+        <div class="flex justify-between mt-1"><span>Prima Mensual</span><strong id="mensual" class="money">—</strong></div>
+      </div>
+
+      <div id="meses-wrap" class="card" style="display:none">
+        <div class="grid md:grid-cols-3 gap-4 items-end">
+          <div>
+            <label class="label">Meses de cobertura</label>
+            <select id="meses" class="input w-full"></select>
+          </div>
+          <div class="md:col-span-2 kpi">
+            <div class="flex justify-between">
+              <span>Total para <span id="meses-label" class="accent">—</span> mes(es)</span>
+              <strong id="total-meses" class="money">—</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Rutas con fallback (raíz o /data)
+    const JSON_CANDIDATES = {
+      BIMBO: ['data/pricing-bimbo.json', 'pricing-bimbo.json', './pricing-bimbo.json'],
+      STRM:  ['data/pricing-strm.json',  'pricing-strm.json',  './pricing-strm.json']
+    };
+
+    const $ = s => document.querySelector(s);
+    const formatMoney = (v) => new Intl.NumberFormat('es-MX', {style:'currency', currency:'MXN'}).format(Number(v||0));
+
+    function rangoDeEdad(edad) {
+      if (edad >= 80) return '80-mas';
+      const low = Math.floor(edad / 5) * 5;
+      const high = Math.min(low + 4, 79);
+      const a = String(low).padStart(2,'0');
+      const b = String(high).padStart(2,'0');
+      return `${a}-${b}`;
+    }
+
+    async function fetchFirst(urls) {
+      let lastErr;
+      for (const url of urls) {
+        try {
+          const res = await fetch(url, { cache: 'no-cache' });
+          if (res.ok) return await res.json();
+          lastErr = new Error('HTTP ' + res.status + ' en ' + url);
+        } catch (e) { lastErr = e; }
+      }
+      throw lastErr || new Error('No se pudo cargar ningún JSON de tarifas');
+    }
+
+    async function loadJSON(cliente) {
+      const candidates = JSON_CANDIDATES[cliente];
+      if (!candidates) throw new Error('Cliente no soportado');
+      return await fetchFirst(candidates);
+    }
+
+    function calcularBimbo(pricing, genero, edad) {
+      const r = rangoDeEdad(edad);
+      const fila = pricing.tarifas.find(t => t.rango === r);
+      if (!fila) throw new Error('No hay tarifa para el rango ' + r);
+      const valor = genero === 'M' ? fila.M : fila.H;
+      if (typeof valor !== 'number') throw new Error('Tarifa inválida en ' + r);
+      const dec = pricing?.reglas?.redondeo ?? 2;
+      const total = Number(valor.toFixed(dec));
+      const mensual = Number((total / 12).toFixed(dec));
+      return { total, mensual };
+    }
+
+    function calcularStrm(pricing, plan, genero, edad) {
+      const r = rangoDeEdad(edad);
+      const tabla = pricing?.planes?.[plan];
+      if (!Array.isArray(tabla)) throw new Error('Plan inválido para STRM');
+      const fila = tabla.find(t => t.rango === r);
+      if (!fila) throw new Error('No hay tarifa para el rango ' + r + ' en ' + plan);
+      const valor = genero === 'M' ? fila.M : fila.H;
+      if (typeof valor !== 'number') throw new Error('Tarifa inválida en ' + r);
+      const dec = pricing?.reglas?.redondeo ?? 2;
+      const total = Number(valor.toFixed(dec));
+      const mensual = Number((total / 12).toFixed(dec));
+      return { total, mensual };
+    }
+
+    function togglePlan() {
+      const isStrm = $('#cliente').value === 'STRM';
+      $('#plan-wrap').style.display = isStrm ? '' : 'none';
+    }
+
+    function buildMesesSelect() {
+      const sel = $('#meses');
+      sel.innerHTML = '';
+      for (let i=1;i<=12;i++) {
+        const opt = document.createElement('option');
+        opt.value = String(i); opt.textContent = String(i);
+        sel.appendChild(opt);
+      }
+    }
+
+    function actualizarMeses(mensual) {
+      const meses = Number($('#meses').value||'1');
+      $('#meses-label').textContent = meses;
+      $('#total-meses').textContent = formatMoney(Number((mensual * meses).toFixed(2)));
+    }
+
+    async function consultar() {
+      const btn = $('#btn-consultar'); btn.disabled = true;
+      $('#status').classList.add('hidden');
+      try {
+        const cliente = $('#cliente').value;
+        const genero  = $('#genero').value;
+        const edad    = Number($('#edad').value)||0;
+        const pricing = await loadJSON(cliente);
+        let result;
+        if (cliente === 'BIMBO') {
+          result = calcularBimbo(pricing, genero, edad);
+        } else {
+          const plan = $('#plan').value;
+          result = calcularStrm(pricing, plan, genero, edad);
+        }
+        $('#total').textContent = formatMoney(result.total);
+        $('#mensual').textContent = formatMoney(result.mensual);
+        // meses de cobertura
+        buildMesesSelect();
+        $('#meses-wrap').style.display = '';
+        $('#meses').value = '12';
+        actualizarMeses(result.mensual);
+        $('#meses').onchange = () => actualizarMeses(result.mensual);
+      } catch (e) {
+        $('#status').textContent = e.message;
+        $('#status').classList.remove('hidden');
+        $('#total').textContent = '—';
+        $('#mensual').textContent = '—';
+        $('#meses-wrap').style.display = 'none';
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    // init
+    togglePlan();
+    $('#cliente').addEventListener('change', togglePlan);
+    $('#btn-consultar').addEventListener('click', consultar);
+  </script>
+</body>
+</html>
