@@ -63,8 +63,8 @@
 
   <script>
     const JSON_MAP = {
-      'BIMBO': 'data/pricing-bimbo.json',
-      'STRM':  'data/pricing-strm.json'
+      'BIMBO': 'pricing-bimbo.json',
+      'STRM':  'pricing-strm.json'
     };
     const $ = s => document.querySelector(s);
     const formatMoney = (v) => new Intl.NumberFormat('es-MX', {style:'currency', currency:'MXN'}).format(Number(v||0));
