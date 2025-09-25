@@ -7,14 +7,14 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root{
-      --mcb-blue:#0057A4;
-      --mcb-green:#2FA24A;
-      --mcb-lime:#9CCB3B;
-      --ink:#1F2937;
-      --muted:#6B7280;
-      --stroke:#E5E7EB;
-      --surface:#ffffff;
-      --bg:#ffffff;
+      --mcb-blue:#0057A4;   /* primario */
+      --mcb-green:#2FA24A;  /* acento */
+      --mcb-lime:#9CCB3B;   /* badge */
+      --ink:#1F2937;        /* texto principal */
+      --muted:#6B7280;      /* texto secundario */
+      --stroke:#E5E7EB;     /* bordes */
+      --surface:#ffffff;    /* tarjetas */
+      --bg:#ffffff;         /* fondo */
     }
     body{background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto}
     .container{max-width:900px}
@@ -29,9 +29,23 @@
     .kpi{background:#F7FAFF;border:1px solid #DCEBFF;border-radius:14px;padding:.95rem}
     .accent{color:var(--mcb-green)}
     header .brand{display:flex;align-items:center;gap:14px}
-    header img{height:56px}
+    header img{height:112px}         /* 200% del tamaño que tenías (antes ~56px) */
     header h1{line-height:1}
     .subtle{color:var(--muted)}
+
+    /* Destacar “Prima Total Anual” */
+    .primary-row {align-items:baseline}
+    .primary-label {font-size:1.05rem;font-weight:600;color:#0f172a}
+    .primary-amount {font-size:1.6rem;font-weight:800;color:var(--mcb-blue)}
+    .badge {
+      background: var(--mcb-lime);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px; /* pill */
+      line-height: 1;
+    }
   </style>
 </head>
 <body>
@@ -91,10 +105,24 @@
     <!-- Resultado -->
     <section class="grid gap-4">
       <div class="kpi">
-        <div class="flex justify-between"><span>Prima Total Anual</span><strong id="total" class="money">—</strong></div>
-        <div class="flex justify-between mt-1"><span>Prima Mensual</span><strong id="mensual" class="money">—</strong></div>
-        <div id="row-semanal" class="flex justify-between mt-1" style="display:none"><span>Prima Semanal (anual/48)</span><strong id="semanal" class="money">—</strong></div>
-        <div id="row-catorcenal" class="flex justify-between mt-1" style="display:none"><span>Prima Catorcenal (anual/24)</span><strong id="catorcenal" class="money">—</strong></div>
+        <div class="flex justify-between primary-row">
+          <span class="primary-label">Prima Total Anual</span>
+          <div class="flex items-center gap-2">
+            <strong id="total" class="money primary-amount">—</strong>
+            <span class="badge" id="badge-total">TOTAL</span>
+          </div>
+        </div>
+        <div class="flex justify-between mt-1">
+          <span>Prima Mensual</span><strong id="mensual" class="money">—</strong>
+        </div>
+        <div id="row-semanal" class="flex justify-between mt-1" style="display:none">
+          <span>Prima Semanal <span class="subtle">(anual/48)</span></span>
+          <strong id="semanal" class="money">—</strong>
+        </div>
+        <div id="row-catorcenal" class="flex justify-between mt-1" style="display:none">
+          <span>Prima Catorcenal <span class="subtle">(anual/24)</span></span>
+          <strong id="catorcenal" class="money">—</strong>
+        </div>
       </div>
 
       <div id="meses-wrap" class="card" style="display:none">
@@ -122,7 +150,8 @@
     };
 
     const $ = s => document.querySelector(s);
-    const formatMoney = (v) => new Intl.NumberFormat('es-MX', {style:'currency', currency:'MXN'}).format(Number(v||0));
+    const formatMoney = (v) =>
+      new Intl.NumberFormat('es-MX', {style:'currency', currency:'MXN'}).format(Number(v||0));
 
     function rangoDeEdad(edad) {
       if (edad >= 80) return '80-mas';
@@ -194,6 +223,9 @@
         const edad    = Number($('#edad').value)||0;
         const pricing = await loadJSON(cliente);
         let r;
+        // Mostrar badge dinámico por cliente si lo quieres (descomenta la línea siguiente):
+        // $('#badge-total').textContent = 'TOTAL ' + cliente;
+
         if (cliente === 'BIMBO') {
           r = calcularBimbo(pricing, genero, edad);
           $('#row-semanal').style.display = '';
@@ -208,8 +240,10 @@
           $('#semanal').textContent = formatMoney(r.semanal);
           $('#catorcenal').textContent = '—';
         }
+
         $('#total').textContent = formatMoney(r.total);
         $('#mensual').textContent = formatMoney(r.mensual);
+
         // meses de cobertura
         buildMesesSelect();
         $('#meses-wrap').style.display = '';
