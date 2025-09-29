@@ -55,7 +55,7 @@
         <img src="Logo_Colores_MCB.png" alt="MCBrokers" />
         <div>
           <h1 class="text-2xl font-semibold">Cotizador — GNP Salud</h1>
-          <p class="subtle text-sm">Cotización operativa con tarifas STRM y BIMBO</p>
+          <p class="subtle text-sm">Cotización interna con tarifas STRM y BIMBO</p>
         </div>
       </div>
       <hr class="mt-4 border-gray-200"/>
@@ -154,10 +154,17 @@
       new Intl.NumberFormat('es-MX', {style:'currency', currency:'MXN'}).format(Number(v||0));
 
     function rangoDeEdad(edad) {
-      if (edad >= 80) return '80-mas';
-      const low = Math.floor(edad / 5) * 5;
-      const high = Math.min(low + 4, 79);
-      return `${String(low).padStart(2,'0')}-${String(high).padStart(2,'0')}`;
+      edad = Number(edad || 0);
+      if (edad < 0) edad = 0;
+    
+      if (edad <= 4) return '00-04';       // primer bloque
+      if (edad <= 14) return '05-14';      // bloque especial unido
+      if (edad >= 80) return '80-mas';     // último bloque abierto
+    
+      // a partir de 15 va en bloques de 5: 15-19, 20-24, …, 75-79
+      const start = Math.floor((edad - 15) / 5) * 5 + 15;
+      const end = Math.min(start + 4, 79);
+      return `${String(start).padStart(2, '0')}-${String(end).padStart(2, '0')}`;
     }
 
     async function loadJSON(cliente) {
