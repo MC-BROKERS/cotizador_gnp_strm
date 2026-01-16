@@ -102,46 +102,109 @@
       <div class="hidden md:block"></div>
     </section>
 
-    <!-- Fila 3: Botón Consultar -->
+    <!-- Fila 3: Extra-Prima -->
+    <section class="card grid md:grid-cols-3 gap-4 mb-3">
+      <div>
+        <label class="label">Extra-Prima (%)</label>
+        <input id="extraprima" type="number" min="0" max="100" step="0.1" value="0" placeholder="0" class="input w-full"/>
+      </div>
+      <div id="pago-mixto-wrap" style="display:none">
+        <label class="label flex items-center gap-2 cursor-pointer">
+          <input id="pago-mixto" type="checkbox" class="w-4 h-4"/>
+          <span>Pago Mixto (solo STRM)</span>
+        </label>
+        <p class="text-xs text-gray-500 mt-1">70% semanal + 15% agosto + 15% dic</p>
+      </div>
+      <div class="hidden md:block"></div>
+    </section>
+
+    <!-- Fila 4: Botón Consultar -->
     <section class="card mb-4">
       <button id="btn-consultar" class="btn">Consultar</button>
       <p id="status" class="text-xs text-red-600 mt-2 hidden"></p>
     </section>
 
-    <!-- Resultado -->
-    <section class="grid gap-4">
+    <!-- Resultado: Prima Original -->
+    <section id="result-original" class="grid gap-4" style="display:none">
       <div class="kpi">
         <div class="flex justify-between primary-row">
           <span class="primary-label">Prima Total Anual</span>
           <div class="flex items-center gap-2">
-            <strong id="total" class="money primary-amount">—</strong>
-            <span class="badge" id="badge-total">TOTAL</span>
+            <strong id="total-original" class="money primary-amount">—</strong>
+            <span class="badge" id="badge-original">ORIGINAL</span>
           </div>
         </div>
         <div class="flex justify-between mt-1">
-          <span>Prima Mensual</span><strong id="mensual" class="money">—</strong>
+          <span>Prima Mensual</span><strong id="mensual-original" class="money">—</strong>
         </div>
-        <div id="row-semanal" class="flex justify-between mt-1" style="display:none">
+        <div id="row-semanal-original" class="flex justify-between mt-1" style="display:none">
           <span>Prima Semanal <span class="subtle">(anual/48)</span></span>
-          <strong id="semanal" class="money">—</strong>
+          <strong id="semanal-original" class="money">—</strong>
         </div>
-        <div id="row-catorcenal" class="flex justify-between mt-1" style="display:none">
+        <div id="row-catorcenal-original" class="flex justify-between mt-1" style="display:none">
           <span>Prima Catorcenal <span class="subtle">(anual/24)</span></span>
-          <strong id="catorcenal" class="money">—</strong>
+          <strong id="catorcenal-original" class="money">—</strong>
         </div>
       </div>
+    </section>
 
-      <div id="meses-wrap" class="card" style="display:none">
-        <div class="grid md:grid-cols-3 gap-4 items-end">
-          <div>
-            <label class="label">Meses de cobertura</label>
-            <select id="meses" class="input w-full"></select>
+    <!-- Resultado: Prima con Extra-Prima (solo visible si hay extra-prima > 0) -->
+    <section id="result-adjusted" class="grid gap-4 mt-4" style="display:none">
+      <div class="kpi border-2 border-green-200">
+        <div class="flex justify-between primary-row">
+          <span class="primary-label">Prima con Extra-Prima</span>
+          <div class="flex items-center gap-2">
+            <strong id="total-adjusted" class="money" style="font-size:1.6rem;font-weight:800;color:var(--mcb-green)">—</strong>
+            <span class="badge" id="badge-adjusted" style="background:var(--mcb-green)">+0%</span>
           </div>
-          <div class="md:col-span-2 kpi">
-            <div class="flex justify-between">
-              <span>Total para <span id="meses-label" class="accent">—</span> mes(es)</span>
-              <strong id="total-meses" class="money">—</strong>
-            </div>
+        </div>
+        <div class="flex justify-between mt-1">
+          <span>Prima Mensual</span><strong id="mensual-adjusted" class="money" style="color:var(--mcb-green)">—</strong>
+        </div>
+        <div id="row-semanal-adjusted" class="flex justify-between mt-1" style="display:none">
+          <span>Prima Semanal</span>
+          <strong id="semanal-adjusted" class="money" style="color:var(--mcb-green)">—</strong>
+        </div>
+        <div id="row-catorcenal-adjusted" class="flex justify-between mt-1" style="display:none">
+          <span>Prima Catorcenal</span>
+          <strong id="catorcenal-adjusted" class="money" style="color:var(--mcb-green)">—</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- Resultado: Pago Mixto (solo visible si está activo) -->
+    <section id="result-mixto" class="grid gap-4 mt-4" style="display:none">
+      <div class="kpi" style="background:#FFF9F0;border:1px solid #FFE4B5">
+        <div class="flex justify-between items-baseline mb-3">
+          <span class="font-semibold text-lg">Modalidad Pago Mixto</span>
+          <span class="badge" style="background:#FF8C00">STRM</span>
+        </div>
+        <div class="flex justify-between mt-2">
+          <span>48 Pagos Semanales (70%)</span>
+          <strong id="mixto-semanal" class="money">—</strong>
+        </div>
+        <div class="flex justify-between mt-2">
+          <span>Pago Extraordinario Agosto (15%)</span>
+          <strong id="mixto-agosto" class="money">—</strong>
+        </div>
+        <div class="flex justify-between mt-2">
+          <span>Pago Extraordinario Diciembre (15%)</span>
+          <strong id="mixto-diciembre" class="money">—</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- Meses de cobertura -->
+    <section id="meses-wrap" class="card mt-4" style="display:none">
+      <div class="grid md:grid-cols-3 gap-4 items-end">
+        <div>
+          <label class="label">Meses de cobertura</label>
+          <select id="meses" class="input w-full"></select>
+        </div>
+        <div class="md:col-span-2 kpi">
+          <div class="flex justify-between">
+            <span>Total para <span id="meses-label" class="accent">—</span> mes(es)</span>
+            <strong id="total-meses" class="money">—</strong>
           </div>
         </div>
       </div>
@@ -218,6 +281,7 @@
       const isSTRM = $('#cliente').value === 'STRM';
       $('#producto-wrap').style.display = isSTRM ? '' : 'none';
       $('#plan-wrap').style.display = isSTRM ? '' : 'none';
+      $('#pago-mixto-wrap').style.display = isSTRM ? '' : 'none';
     }
 
     function buildMesesSelect() {
@@ -239,48 +303,108 @@
     async function consultar() {
       const btn = $('#btn-consultar'); btn.disabled = true;
       $('#status').classList.add('hidden');
+      
+      // Ocultar todos los resultados inicialmente
+      $('#result-original').style.display = 'none';
+      $('#result-adjusted').style.display = 'none';
+      $('#result-mixto').style.display = 'none';
+      $('#meses-wrap').style.display = 'none';
+      
       try {
         const cliente = $('#cliente').value;
         const producto = $('#producto').value;
         const genero  = $('#genero').value;
         const edad    = Number($('#edad').value)||0;
+        const extraPrimaPct = Number($('#extraprima').value)||0;
+        const pagoMixto = cliente === 'STRM' && $('#pago-mixto').checked;
+        
         const pricing = await loadJSON(cliente, producto);
-        let r;
-        // Mostrar badge dinámico por cliente si lo quieres (descomenta la línea siguiente):
-        // $('#badge-total').textContent = 'TOTAL ' + cliente;
-
+        let r; // resultado base (sin extra-prima)
+        
+        // Calcular prima base según cliente
         if (cliente === 'BIMBO') {
           r = calcularBimbo(pricing, genero, edad);
-          $('#row-semanal').style.display = '';
-          $('#row-catorcenal').style.display = '';
-          $('#semanal').textContent = formatMoney(r.semanal);
-          $('#catorcenal').textContent = formatMoney(r.catorcenal);
         } else {
           const plan = $('#plan').value;
           r = calcularStrm(pricing, plan, genero, edad);
-          $('#row-semanal').style.display = '';
-          $('#row-catorcenal').style.display = 'none';
-          $('#semanal').textContent = formatMoney(r.semanal);
-          $('#catorcenal').textContent = '—';
         }
-
-        $('#total').textContent = formatMoney(r.total);
-        $('#mensual').textContent = formatMoney(r.mensual);
-
-        // meses de cobertura
+        
+        // Mostrar resultados base (prima original)
+        $('#result-original').style.display = '';
+        $('#badge-original').textContent = extraPrimaPct > 0 ? 'ORIGINAL' : 'TOTAL';
+        $('#total-original').textContent = formatMoney(r.total);
+        $('#mensual-original').textContent = formatMoney(r.mensual);
+        
+        // Configurar filas de periodicidad según cliente
+        if (cliente === 'BIMBO') {
+          $('#row-semanal-original').style.display = '';
+          $('#row-catorcenal-original').style.display = '';
+          $('#semanal-original').textContent = formatMoney(r.semanal);
+          $('#catorcenal-original').textContent = formatMoney(r.catorcenal);
+        } else {
+          $('#row-semanal-original').style.display = '';
+          $('#row-catorcenal-original').style.display = 'none';
+          $('#semanal-original').textContent = formatMoney(r.semanal);
+        }
+        
+        // Calcular y mostrar extra-prima si es > 0
+        if (extraPrimaPct > 0) {
+          const factor = 1 + (extraPrimaPct / 100);
+          const rAdjusted = {
+            total: Number((r.total * factor).toFixed(2)),
+            mensual: Number((r.mensual * factor).toFixed(2)),
+            semanal: r.semanal ? Number((r.semanal * factor).toFixed(2)) : null,
+            catorcenal: r.catorcenal ? Number((r.catorcenal * factor).toFixed(2)) : null
+          };
+          
+          $('#result-adjusted').style.display = '';
+          $('#badge-adjusted').textContent = `+${extraPrimaPct}%`;
+          $('#total-adjusted').textContent = formatMoney(rAdjusted.total);
+          $('#mensual-adjusted').textContent = formatMoney(rAdjusted.mensual);
+          
+          if (cliente === 'BIMBO') {
+            $('#row-semanal-adjusted').style.display = '';
+            $('#row-catorcenal-adjusted').style.display = '';
+            $('#semanal-adjusted').textContent = formatMoney(rAdjusted.semanal);
+            $('#catorcenal-adjusted').textContent = formatMoney(rAdjusted.catorcenal);
+          } else {
+            $('#row-semanal-adjusted').style.display = '';
+            $('#row-catorcenal-adjusted').style.display = 'none';
+            $('#semanal-adjusted').textContent = formatMoney(rAdjusted.semanal);
+          }
+        }
+        
+        // Calcular y mostrar pago mixto si está activo
+        if (pagoMixto) {
+          // El mixto se calcula ANTES de extra-prima, así que usamos r.total (prima base)
+          const totalParaMixto = extraPrimaPct > 0 
+            ? Number((r.total * (1 + extraPrimaPct/100)).toFixed(2))
+            : r.total;
+          
+          const semanal48 = Number((totalParaMixto * 0.70 / 48).toFixed(2));
+          const agosto = Number((totalParaMixto * 0.15).toFixed(2));
+          const diciembre = Number((totalParaMixto * 0.15).toFixed(2));
+          
+          $('#result-mixto').style.display = '';
+          $('#mixto-semanal').textContent = formatMoney(semanal48);
+          $('#mixto-agosto').textContent = formatMoney(agosto);
+          $('#mixto-diciembre').textContent = formatMoney(diciembre);
+        }
+        
+        // Meses de cobertura (usar mensual con o sin extra-prima)
+        const mensualParaMeses = extraPrimaPct > 0 
+          ? Number((r.mensual * (1 + extraPrimaPct/100)).toFixed(2))
+          : r.mensual;
+        
         buildMesesSelect();
         $('#meses-wrap').style.display = '';
         $('#meses').value = '12';
-        actualizarMeses(r.mensual);
-        $('#meses').onchange = () => actualizarMeses(r.mensual);
+        actualizarMeses(mensualParaMeses);
+        $('#meses').onchange = () => actualizarMeses(mensualParaMeses);
+        
       } catch (e) {
         $('#status').textContent = e.message;
         $('#status').classList.remove('hidden');
-        $('#total').textContent = '—';
-        $('#mensual').textContent = '—';
-        $('#row-semanal').style.display = 'none';
-        $('#row-catorcenal').style.display = 'none';
-        $('#meses-wrap').style.display = 'none';
       } finally {
         btn.disabled = false;
       }
