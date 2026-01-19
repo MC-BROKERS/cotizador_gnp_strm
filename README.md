@@ -1,154 +1,107 @@
-# Cotizador GNP Salud - MCBrokers
+# Herramientas Internas MCBrokers
 
-Sistema de cotización interno para pólizas de Gastos Médicos Mayores de los clientes **BIMBO** y **STRM**.
+Sistema integrado con dos herramientas principales:
+1. **Cotizador GNP Salud** - Para cotizar seguros de salud (STRM y BIMBO)
+2. **Selector de Campañas de Emisión Autos** - Para identificar códigos de campaña
 
-## 📋 Descripción
-
-Aplicación web que permite calcular primas de seguros de salud basadas en:
-- **Género** (Hombre/Mujer)
-- **Edad** (0-120 años)
-- **Cliente** (BIMBO o STRM)
-- **Producto** (solo STRM: Línea Azul o Excesos)
-- **Plan** (solo STRM: Tarifa Plan 600 o Tarifa Otros Planes)
-
-## 🚀 Características
-
-### Cálculos disponibles:
-- **Prima Total Anual**
-- **Prima Mensual** (anual/12)
-- **Prima Semanal** (anual/48)
-- **Prima Catorcenal** (anual/24) - *solo BIMBO*
-- **Proyección por meses de cobertura** (1-12 meses)
-
-### Funcionalidades:
-- ✅ Interfaz responsive (móvil y desktop)
-- ✅ Diseño con colores corporativos MCBrokers
-- ✅ Carga dinámica de tarifas desde JSON
-- ✅ Validación de datos y manejo de errores
-- ✅ Formato de moneda en pesos mexicanos (MXN)
-
-## 📁 Estructura del proyecto
+## 📂 Estructura del Proyecto
 
 ```
-/
-├── index.html                    # Aplicación principal
-├── pricing-bimbo.json            # Tarifas BIMBO
-├── pricing-strm.json             # Tarifas STRM - Línea Azul
-├── pricing-strm-excesos.json     # Tarifas STRM - Excesos
-└── Logo_Colores_MCB.png          # Logo corporativo (opcional)
+proyecto/
+├── index.html                          # Archivo principal
+├── data/
+│   ├── campanas.json                   # 40 campañas de autos
+│   └── ejemplos-expedientes.json       # Ejemplos de formato por empresa
+├── pricing/                            # (Necesitas agregar estos)
+│   ├── pricing-bimbo.json
+│   ├── pricing-strm.json
+│   └── pricing-strm-excesos.json
+└── assets/                             # (Necesitas agregar esto)
+    └── Logo_Colores_MCB.png
 ```
 
-## 🛠️ Instalación
+## 🚀 Instalación
 
-1. **Clonar o descargar** todos los archivos en la misma carpeta
-2. **Abrir** `index.html` en un navegador web moderno
-3. **No requiere servidor** - funciona localmente
+1. **Descarga todos los archivos** manteniendo la estructura de carpetas
+2. **Agrega tus archivos de pricing** en la carpeta `pricing/`
+3. **Agrega el logo** en la carpeta `assets/`
+4. **Abre `index.html`** en tu navegador
 
-> ⚠️ **Nota**: Si el navegador bloquea la carga de archivos JSON locales, usa un servidor local simple:
-> ```bash
-> python -m http.server 8000
-> # Acceder a: http://localhost:8000
-> ```
+## 📊 Datos Externos (JSON)
 
-## 📊 Estructura de tarifas (JSON)
+### `data/campanas.json`
+Contiene las 40 campañas con:
+- Empresa
+- Aseguradora
+- Vía de pago
+- Periodicidad
+- Nombre de campaña
+- Regla de dígitos de expediente
 
-### Formato general:
+### `data/ejemplos-expedientes.json`
+Contiene ejemplos de formato de expediente por empresa:
+- STRM (7 dígitos)
+- Caja de Ahorro (5 dígitos)
+- CTBR (8 dígitos)
+- Empleados de STRM (6 dígitos)
+- MCB (RFC sin homoclave)
+- Tecmarketing (8 dígitos)
+
+## ✏️ Cómo Actualizar Datos
+
+### Agregar/Modificar Campañas
+Edita `data/campanas.json`:
 ```json
 {
-  "version": "2025.XX.XX-cliente-v1",
-  "last_updated": "2025-XX-XX",
-  "moneda": "MXN",
-  "cliente": "NOMBRE_CLIENTE",
-  "reglas": {
-    "iva": 0.16,
-    "redondeo": 2
-  },
-  "tarifas": [
-    {
-      "rango": "00-04",
-      "H": 6790,
-      "M": 6190
-    }
+  "empresa": "Nueva Empresa",
+  "aseguradora": "GNP",
+  "via_pago": "DxN",
+  "periodicidad": "Semanal",
+  "campana": "NUEVA_CAMPANA",
+  "digitos_expediente": "8 dígitos"
+}
+```
+
+### Agregar/Modificar Ejemplos
+Edita `data/ejemplos-expedientes.json`:
+```json
+{
+  "Nueva Empresa": [
+    "12345678",
+    "87654321"
   ]
 }
 ```
 
-### STRM con múltiples planes:
-```json
-{
-  "planes": {
-    "Plan600": [ /* tarifas */ ],
-    "OtrosPlanes": [ /* tarifas */ ]
-  }
-}
-```
+## 🎯 Características
 
-### Rangos de edad soportados:
-- `00-04` (0-4 años)
-- `05-14` (5-14 años) - *rango especial unificado*
-- `15-19`, `20-24`, `25-29`, ... `75-79` (bloques de 5 años)
-- `80-mas` (80+ años) - *rango abierto*
+### Cotizador GNP Salud
+- Cotización para STRM y BIMBO
+- Cálculo de extra-prima
+- Modalidad pago mixto (STRM)
+- Cálculo por meses de cobertura
 
-## 🎨 Personalización
+### Selector de Campañas
+- Búsqueda rápida por nombre
+- Filtros en cascada (Empresa → Aseguradora → Periodicidad)
+- Botón copiar código de campaña
+- Ejemplos de expediente contextuales
+- Contador de resultados
 
-### Colores corporativos (CSS):
-```css
---mcb-blue: #0057A4;    /* Color primario */
---mcb-green: #2FA24A;   /* Color acento */
---mcb-lime: #9CCB3B;    /* Badge */
-```
+## 📈 Ventajas de la Estructura Optimizada
 
-### Modificar tarifas:
-1. Editar el archivo JSON correspondiente
-2. Mantener estructura y formato de rangos
-3. Recargar la página
+1. **Mantenimiento fácil**: Actualiza datos sin tocar código
+2. **Reutilización**: Otros sistemas pueden consumir los JSON
+3. **Versionamiento**: Git trackea mejor los cambios
+4. **Performance**: HTML 70% más ligero
+5. **Escalabilidad**: Fácil agregar empresas/campañas
 
-## 📝 Uso
+## 🔧 Soporte
 
-1. **Seleccionar empresa**: BIMBO o STRM
-2. **Si es STRM**: Elegir Producto (Línea Azul/Excesos) y Plan
-3. **Ingresar datos**: Género y Edad
-4. **Consultar**: Ver resultados detallados
-5. **Opcional**: Calcular primas por meses de cobertura
-
-## 🔧 Tecnologías
-
-- **HTML5** - Estructura
-- **Tailwind CSS** (CDN) - Estilos
-- **JavaScript Vanilla** - Lógica de negocio
-- **JSON** - Base de datos de tarifas
-
-## 📌 Requisitos
-
-- Navegador moderno (Chrome, Firefox, Safari, Edge)
-- JavaScript habilitado
-- Archivos JSON en la misma carpeta que `index.html`
-
-## 🐛 Solución de problemas
-
-### Error: "No se pudo cargar tarifas"
-- Verificar que los archivos JSON están en la misma carpeta
-- Revisar permisos de lectura de archivos
-- Usar servidor local si el navegador bloquea fetch local
-
-### Tarifa no encontrada
-- Validar que la edad ingresada tiene un rango correspondiente
-- Revisar que el JSON contenga todos los rangos (00-04 hasta 80-mas)
-
-### Resultados incorrectos
-- Verificar decimales en JSON (usar `.` no `,`)
-- Confirmar que género coincide con columnas H/M en JSON
-
-## 📄 Versionado
-
-- **v1.0** (2025-09-23): BIMBO y STRM Línea Azul
-- **v1.1** (2025-12-18): Agregado STRM Excesos con selector de producto
-
-## 👥 Contacto
-
-**MCBrokers**  
-Sistema de cotización interna
+Para dudas o mejoras, contacta al equipo de desarrollo.
 
 ---
 
-**Última actualización**: Diciembre 2025
+**Versión**: 1.1
+**Última actualización**: Enero 2026  
+**MCBrokers** - Herramientas Internas
