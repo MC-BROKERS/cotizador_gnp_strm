@@ -670,6 +670,7 @@
       const periodicidades = [...new Set(CAMPANAS_DATA.map(c => c.periodicidad))].sort();
 
       const empresaSelect = $('#filter-empresa');
+      empresaSelect.innerHTML = '<option value="">Todas las empresas</option>';
       empresas.forEach(e => {
         const opt = document.createElement('option');
         opt.value = e;
@@ -678,6 +679,7 @@
       });
 
       const aseguradoraSelect = $('#filter-aseguradora');
+      aseguradoraSelect.innerHTML = '<option value="">Todas las aseguradoras</option>';
       aseguradoras.forEach(a => {
         const opt = document.createElement('option');
         opt.value = a;
@@ -686,6 +688,7 @@
       });
 
       const periodicidadSelect = $('#filter-periodicidad');
+      periodicidadSelect.innerHTML = '<option value="">Todas las periodicidades</option>';
       periodicidades.forEach(p => {
         const opt = document.createElement('option');
         opt.value = p;
