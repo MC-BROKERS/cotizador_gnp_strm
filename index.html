@@ -3,37 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cotizador — GNP Salud</title>
+  <title>MCBrokers — Herramientas Internas</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root{
-      --mcb-blue:#0057A4;   /* primario */
-      --mcb-green:#2FA24A;  /* acento */
-      --mcb-lime:#9CCB3B;   /* badge */
-      --ink:#1F2937;        /* texto principal */
-      --muted:#6B7280;      /* texto secundario */
-      --stroke:#E5E7EB;     /* bordes */
-      --surface:#ffffff;    /* tarjetas */
-      --bg:#ffffff;         /* fondo */
+      --mcb-blue:#0057A4;
+      --mcb-green:#2FA24A;
+      --mcb-lime:#9CCB3B;
+      --ink:#1F2937;
+      --muted:#6B7280;
+      --stroke:#E5E7EB;
+      --surface:#ffffff;
+      --bg:#ffffff;
     }
     body{background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto}
     .container{max-width:900px}
     .card{background:var(--surface);border:1px solid var(--stroke);border-radius:16px;padding:1rem}
     .input,select{background:#fff;border:1px solid #D1D5DB;border-radius:.7rem;padding:.7rem .85rem;color:var(--ink)}
     .input:focus,select:focus{outline:3px solid color-mix(in oklab, var(--mcb-blue) 25%, white);outline-offset:2px}
-    .btn{background:var(--mcb-blue);border:1px solid #044b8f;border-radius:.9rem;padding:.75rem 1.15rem;color:#fff;font-weight:600}
+    .btn{background:var(--mcb-blue);border:1px solid #044b8f;border-radius:.9rem;padding:.75rem 1.15rem;color:#fff;font-weight:600;cursor:pointer}
     .btn:hover{filter:brightness(1.06)}
     .btn:disabled{opacity:.6;cursor:not-allowed}
-    .label{font-size:.85rem;color:#374151}
+    .btn-secondary{background:#fff;border:1px solid var(--stroke);color:var(--ink)}
+    .btn-secondary:hover{background:#F9FAFB}
+    .label{font-size:.85rem;color:#374151;font-weight:500;display:block;margin-bottom:.4rem}
     .money{font-variant-numeric:tabular-nums}
     .kpi{background:#F7FAFF;border:1px solid #DCEBFF;border-radius:14px;padding:.95rem}
     .accent{color:var(--mcb-green)}
     header .brand{display:flex;align-items:center;gap:14px}
-    header img{height:112px}         /* 200% del tamaño que tenías (antes ~56px) */
+    header img{height:112px}
     header h1{line-height:1}
     .subtle{color:var(--muted)}
-
-    /* Destacar “Prima Total Anual” */
     .primary-row {align-items:baseline}
     .primary-label {font-size:1.05rem;font-weight:600;color:#0f172a}
     .primary-amount {font-size:1.6rem;font-weight:800;color:var(--mcb-blue)}
@@ -43,8 +43,87 @@
       font-size: 0.75rem;
       font-weight: 700;
       padding: 0.2rem 0.6rem;
-      border-radius: 9999px; /* pill */
+      border-radius: 9999px;
       line-height: 1;
+    }
+
+    /* Sistema de pestañas */
+    .tabs{display:flex;gap:.5rem;border-bottom:2px solid var(--stroke);margin-bottom:1.5rem}
+    .tab{padding:.75rem 1.25rem;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;font-weight:500;color:var(--muted);transition:all .2s}
+    .tab:hover{color:var(--ink)}
+    .tab.active{color:var(--mcb-blue);border-bottom-color:var(--mcb-blue)}
+    .tab-content{display:none}
+    .tab-content.active{display:block}
+
+    /* Estilos para selector de campañas */
+    .search-input{
+      background:#fff;
+      border:1px solid #D1D5DB;
+      border-radius:.7rem;
+      padding:.7rem .85rem 0.7rem 2.5rem;
+      color:var(--ink);
+      width:100%;
+    }
+    .search-wrapper{position:relative}
+    .search-icon{position:absolute;left:.85rem;top:50%;transform:translateY(-50%);color:var(--muted)}
+    .campana-card{
+      background:#fff;
+      border:1px solid var(--stroke);
+      border-radius:12px;
+      padding:1rem;
+      margin-bottom:.75rem;
+      transition:all .2s;
+    }
+    .campana-card:hover{
+      border-color:var(--mcb-blue);
+      box-shadow:0 2px 8px rgba(0,87,164,.1);
+    }
+    .campana-nombre{
+      font-size:1.05rem;
+      font-weight:700;
+      color:var(--ink);
+      font-family:monospace;
+      letter-spacing:-.5px;
+    }
+    .campana-meta{
+      font-size:.8rem;
+      color:var(--muted);
+      margin-top:.35rem;
+    }
+    .campana-meta span{
+      display:inline-block;
+      margin-right:1rem;
+    }
+    .copy-btn{
+      background:var(--mcb-green);
+      border:1px solid #26873d;
+      border-radius:.6rem;
+      padding:.4rem .8rem;
+      color:#fff;
+      font-size:.8rem;
+      font-weight:600;
+      cursor:pointer;
+      transition:all .2s;
+    }
+    .copy-btn:hover{filter:brightness(1.1)}
+    .copy-btn.copied{background:#22c55e;border-color:#16a34a}
+    .results-count{
+      font-size:.9rem;
+      color:var(--muted);
+      padding:.5rem 0;
+      font-weight:500;
+    }
+    .results-count strong{color:var(--mcb-blue)}
+    .empty-state{
+      text-align:center;
+      padding:3rem 1rem;
+      color:var(--muted);
+    }
+    .empty-state svg{
+      width:64px;
+      height:64px;
+      margin:0 auto 1rem;
+      opacity:.3;
     }
   </style>
 </head>
@@ -54,165 +133,261 @@
       <div class="brand">
         <img src="Logo_Colores_MCB.png" alt="MCBrokers" />
         <div>
-          <h1 class="text-2xl font-semibold">Cotizador — GNP Salud</h1>
-          <p class="subtle text-sm">Cotización interna con tarifas STRM y BIMBO</p>
+          <h1 class="text-2xl font-semibold">Herramientas Internas MCBrokers</h1>
+          <p class="subtle text-sm">Cotizador de salud y selector de campañas</p>
         </div>
       </div>
       <hr class="mt-4 border-gray-200"/>
     </header>
 
-    <!-- Fila 1: Empresa + Producto (solo STRM) + Plan (solo STRM) -->
-    <section class="card grid md:grid-cols-3 gap-4 mb-3">
-      <div>
-        <label class="label">Empresa</label>
-        <select id="cliente" class="input w-full">
-          <option value="BIMBO">BIMBO</option>
-          <option value="STRM">STRM</option>
-        </select>
-      </div>
-      <div id="producto-wrap" style="display:none">
-        <label class="label">Producto (STRM)</label>
-        <select id="producto" class="input w-full">
-          <option value="LINEA_AZUL">Línea Azul</option>
-          <option value="EXCESOS">Excesos</option>
-        </select>
-      </div>
-      <div id="plan-wrap" style="display:none">
-        <label class="label">Plan (STRM)</label>
-        <select id="plan" class="input w-full">
-          <option value="Plan600">Tarifa Plan 600</option>
-          <option value="OtrosPlanes">Tarifa Otros Planes</option>
-        </select>
-      </div>
-    </section>
+    <!-- Sistema de pestañas -->
+    <div class="tabs">
+      <div class="tab active" data-tab="salud">Cotizador GNP Salud</div>
+      <div class="tab" data-tab="campanas">Campañas de Emisión Autos</div>
+    </div>
 
-    <!-- Fila 2: Género + Edad -->
-    <section class="card grid md:grid-cols-3 gap-4 mb-3">
-      <div>
-        <label class="label">Género</label>
-        <select id="genero" class="input w-full">
-          <option value="H">Hombre</option>
-          <option value="M">Mujer</option>
-        </select>
-      </div>
-      <div>
-        <label class="label">Edad</label>
-        <input id="edad" type="number" min="0" max="120" value="25" class="input w-full"/>
-      </div>
-      <div class="hidden md:block"></div>
-    </section>
-
-    <!-- Fila 3: Extra-Prima -->
-    <section class="card grid md:grid-cols-3 gap-4 mb-3 items-center">
-      <div>
-        <label class="label">Extra-Prima (%)</label>
-        <input id="extraprima" type="number" min="0" max="100" step="0.1" value="0" placeholder="0" class="input w-full"/>
-      </div>
-      <div id="pago-mixto-wrap" style="display:none">
-        <label class="label flex items-center gap-2 cursor-pointer">
-          <input id="pago-mixto" type="checkbox" class="w-4 h-4"/>
-          <span>Pago Mixto (solo STRM)</span>
-        </label>
-        <p class="text-xs text-gray-500 mt-1">70% semanal + 15% agosto + 15% dic</p>
-      </div>
-      <div class="hidden md:block"></div>
-    </section>
-
-    <!-- Fila 4: Botón Consultar -->
-    <section class="card mb-4">
-      <button id="btn-consultar" class="btn">Consultar</button>
-      <p id="status" class="text-xs text-red-600 mt-2 hidden"></p>
-    </section>
-
-    <!-- Resultado: Prima Original -->
-    <section id="result-original" class="grid gap-4" style="display:none">
-      <div class="kpi">
-        <div class="flex justify-between primary-row">
-          <span class="primary-label">Prima Total Anual</span>
-          <div class="flex items-center gap-2">
-            <strong id="total-original" class="money primary-amount">—</strong>
-            <span class="badge" id="badge-original">ORIGINAL</span>
-          </div>
-        </div>
-        <div class="flex justify-between mt-1">
-          <span>Prima Mensual</span><strong id="mensual-original" class="money">—</strong>
-        </div>
-        <div id="row-semanal-original" class="flex justify-between mt-1" style="display:none">
-          <span>Prima Semanal <span class="subtle">(anual/48)</span></span>
-          <strong id="semanal-original" class="money">—</strong>
-        </div>
-        <div id="row-catorcenal-original" class="flex justify-between mt-1" style="display:none">
-          <span>Prima Catorcenal <span class="subtle">(anual/24)</span></span>
-          <strong id="catorcenal-original" class="money">—</strong>
-        </div>
-      </div>
-    </section>
-
-    <!-- Resultado: Prima con Extra-Prima (solo visible si hay extra-prima > 0) -->
-    <section id="result-adjusted" class="grid gap-4 mt-4" style="display:none">
-      <div class="kpi border-2 border-green-200">
-        <div class="flex justify-between primary-row">
-          <span class="primary-label">Prima Total Extra-Primada</span>
-          <div class="flex items-center gap-2">
-            <strong id="total-adjusted" class="money" style="font-size:1.6rem;font-weight:800;color:var(--mcb-green)">—</strong>
-            <span class="badge" id="badge-adjusted" style="background:var(--mcb-green)">+0%</span>
-          </div>
-        </div>
-        <div class="flex justify-between mt-1">
-          <span>Prima Mensual</span><strong id="mensual-adjusted" class="money" style="color:var(--mcb-green)">—</strong>
-        </div>
-        <div id="row-semanal-adjusted" class="flex justify-between mt-1" style="display:none">
-          <span>Prima Semanal</span>
-          <strong id="semanal-adjusted" class="money" style="color:var(--mcb-green)">—</strong>
-        </div>
-        <div id="row-catorcenal-adjusted" class="flex justify-between mt-1" style="display:none">
-          <span>Prima Catorcenal</span>
-          <strong id="catorcenal-adjusted" class="money" style="color:var(--mcb-green)">—</strong>
-        </div>
-      </div>
-    </section>
-
-    <!-- Resultado: Pago Mixto (solo visible si está activo) -->
-    <section id="result-mixto" class="grid gap-4 mt-4" style="display:none">
-      <div class="kpi" style="background:#FFF9F0;border:1px solid #FFE4B5">
-        <div class="flex justify-between items-baseline mb-3">
-          <span class="font-semibold text-lg">Modalidad Pago Mixto</span>
-          <span class="badge" style="background:#FF8C00">STRM</span>
-        </div>
-        <div class="flex justify-between mt-2">
-          <span>48 Pagos Semanales (70%)</span>
-          <strong id="mixto-semanal" class="money">—</strong>
-        </div>
-        <div class="flex justify-between mt-2">
-          <span>Extraordinario agosto (15%)</span>
-          <strong id="mixto-agosto" class="money">—</strong>
-        </div>
-        <div class="flex justify-between mt-2">
-          <span>Extraordinario diciembre (15%)</span>
-          <strong id="mixto-diciembre" class="money">—</strong>
-        </div>
-      </div>
-    </section>
-
-    <!-- Meses de cobertura -->
-    <section id="meses-wrap" class="card mt-4" style="display:none">
-      <div class="grid md:grid-cols-3 gap-4 items-end">
+    <!-- PESTAÑA 1: COTIZADOR GNP SALUD -->
+    <div id="tab-salud" class="tab-content active">
+      <!-- Fila 1: Empresa + Producto (solo STRM) + Plan (solo STRM) -->
+      <section class="card grid md:grid-cols-3 gap-4 mb-3">
         <div>
-          <label class="label">Meses de cobertura</label>
-          <select id="meses" class="input w-full"></select>
+          <label class="label">Empresa</label>
+          <select id="cliente" class="input w-full">
+            <option value="BIMBO">BIMBO</option>
+            <option value="STRM">STRM</option>
+          </select>
         </div>
-        <div class="md:col-span-2 kpi">
-          <div class="flex justify-between">
-            <span>Total para <span id="meses-label" class="accent">—</span> mes(es)</span>
-            <strong id="total-meses" class="money">—</strong>
+        <div id="producto-wrap" style="display:none">
+          <label class="label">Producto (STRM)</label>
+          <select id="producto" class="input w-full">
+            <option value="LINEA_AZUL">Línea Azul</option>
+            <option value="EXCESOS">Excesos</option>
+          </select>
+        </div>
+        <div id="plan-wrap" style="display:none">
+          <label class="label">Plan (STRM)</label>
+          <select id="plan" class="input w-full">
+            <option value="Plan600">Tarifa Plan 600</option>
+            <option value="OtrosPlanes">Tarifa Otros Planes</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- Fila 2: Género + Edad -->
+      <section class="card grid md:grid-cols-3 gap-4 mb-3">
+        <div>
+          <label class="label">Género</label>
+          <select id="genero" class="input w-full">
+            <option value="H">Hombre</option>
+            <option value="M">Mujer</option>
+          </select>
+        </div>
+        <div>
+          <label class="label">Edad</label>
+          <input id="edad" type="number" min="0" max="120" value="25" class="input w-full"/>
+        </div>
+        <div class="hidden md:block"></div>
+      </section>
+
+      <!-- Fila 3: Extra-Prima -->
+      <section class="card grid md:grid-cols-3 gap-4 mb-3 items-center">
+        <div>
+          <label class="label">Extra-Prima (%)</label>
+          <input id="extraprima" type="number" min="0" max="100" step="0.1" value="0" placeholder="0" class="input w-full"/>
+        </div>
+        <div id="pago-mixto-wrap" style="display:none">
+          <label class="label flex items-center gap-2 cursor-pointer">
+            <input id="pago-mixto" type="checkbox" class="w-4 h-4"/>
+            <span>Pago Mixto (solo STRM)</span>
+          </label>
+          <p class="text-xs text-gray-500 mt-1">70% semanal + 15% agosto + 15% dic</p>
+        </div>
+        <div class="hidden md:block"></div>
+      </section>
+
+      <!-- Fila 4: Botón Consultar -->
+      <section class="card mb-4">
+        <button id="btn-consultar" class="btn">Consultar</button>
+        <p id="status" class="text-xs text-red-600 mt-2 hidden"></p>
+      </section>
+
+      <!-- Resultado: Prima Original -->
+      <section id="result-original" class="grid gap-4" style="display:none">
+        <div class="kpi">
+          <div class="flex justify-between primary-row">
+            <span class="primary-label">Prima Total Anual</span>
+            <div class="flex items-center gap-2">
+              <strong id="total-original" class="money primary-amount">—</strong>
+              <span class="badge" id="badge-original">ORIGINAL</span>
+            </div>
+          </div>
+          <div class="flex justify-between mt-1">
+            <span>Prima Mensual</span><strong id="mensual-original" class="money">—</strong>
+          </div>
+          <div id="row-semanal-original" class="flex justify-between mt-1" style="display:none">
+            <span>Prima Semanal <span class="subtle">(anual/48)</span></span>
+            <strong id="semanal-original" class="money">—</strong>
+          </div>
+          <div id="row-catorcenal-original" class="flex justify-between mt-1" style="display:none">
+            <span>Prima Catorcenal <span class="subtle">(anual/24)</span></span>
+            <strong id="catorcenal-original" class="money">—</strong>
           </div>
         </div>
+      </section>
+
+      <!-- Resultado: Prima con Extra-Prima -->
+      <section id="result-adjusted" class="grid gap-4 mt-4" style="display:none">
+        <div class="kpi border-2 border-green-200">
+          <div class="flex justify-between primary-row">
+            <span class="primary-label">Prima Total Extra-Primada</span>
+            <div class="flex items-center gap-2">
+              <strong id="total-adjusted" class="money" style="font-size:1.6rem;font-weight:800;color:var(--mcb-green)">—</strong>
+              <span class="badge" id="badge-adjusted" style="background:var(--mcb-green)">+0%</span>
+            </div>
+          </div>
+          <div class="flex justify-between mt-1">
+            <span>Prima Mensual</span><strong id="mensual-adjusted" class="money" style="color:var(--mcb-green)">—</strong>
+          </div>
+          <div id="row-semanal-adjusted" class="flex justify-between mt-1" style="display:none">
+            <span>Prima Semanal</span>
+            <strong id="semanal-adjusted" class="money" style="color:var(--mcb-green)">—</strong>
+          </div>
+          <div id="row-catorcenal-adjusted" class="flex justify-between mt-1" style="display:none">
+            <span>Prima Catorcenal</span>
+            <strong id="catorcenal-adjusted" class="money" style="color:var(--mcb-green)">—</strong>
+          </div>
+        </div>
+      </section>
+
+      <!-- Resultado: Pago Mixto -->
+      <section id="result-mixto" class="grid gap-4 mt-4" style="display:none">
+        <div class="kpi" style="background:#FFF9F0;border:1px solid #FFE4B5">
+          <div class="flex justify-between items-baseline mb-3">
+            <span class="font-semibold text-lg">Modalidad Pago Mixto</span>
+            <span class="badge" style="background:#FF8C00">STRM</span>
+          </div>
+          <div class="flex justify-between mt-2">
+            <span>48 Pagos Semanales (70%)</span>
+            <strong id="mixto-semanal" class="money">—</strong>
+          </div>
+          <div class="flex justify-between mt-2">
+            <span>Extraordinario agosto (15%)</span>
+            <strong id="mixto-agosto" class="money">—</strong>
+          </div>
+          <div class="flex justify-between mt-2">
+            <span>Extraordinario diciembre (15%)</span>
+            <strong id="mixto-diciembre" class="money">—</strong>
+          </div>
+        </div>
+      </section>
+
+      <!-- Meses de cobertura -->
+      <section id="meses-wrap" class="card mt-4" style="display:none">
+        <div class="grid md:grid-cols-3 gap-4 items-end">
+          <div>
+            <label class="label">Meses de cobertura</label>
+            <select id="meses" class="input w-full"></select>
+          </div>
+          <div class="md:col-span-2 kpi">
+            <div class="flex justify-between">
+              <span>Total para <span id="meses-label" class="accent">—</span> mes(es)</span>
+              <strong id="total-meses" class="money">—</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- PESTAÑA 2: CAMPAÑAS DE EMISIÓN AUTOS -->
+    <div id="tab-campanas" class="tab-content">
+      <!-- Loader -->
+      <div id="campanas-loader" class="text-center" style="padding:3rem">
+        <div style="display:inline-block;width:40px;height:40px;border:4px solid var(--stroke);border-top-color:var(--mcb-blue);border-radius:50%;animation:spin 1s linear infinite"></div>
+        <p style="margin-top:1rem;color:var(--muted)">Cargando campañas...</p>
       </div>
-    </section>
+
+      <!-- Contenido principal (oculto hasta que cargue) -->
+      <div id="campanas-main" style="display:none">
+        <!-- Búsqueda rápida -->
+        <section class="card mb-3">
+          <div class="search-wrapper">
+            <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            <input id="search-input" type="text" placeholder="Buscar por nombre de campaña..." class="search-input"/>
+          </div>
+        </section>
+
+        <!-- Filtros en cascada -->
+        <section class="card grid md:grid-cols-3 gap-4 mb-3">
+          <div>
+            <label class="label">Empresa</label>
+            <select id="filter-empresa" class="input w-full">
+              <option value="">Todas las empresas</option>
+            </select>
+          </div>
+          <div>
+            <label class="label">Aseguradora</label>
+            <select id="filter-aseguradora" class="input w-full">
+              <option value="">Todas las aseguradoras</option>
+            </select>
+          </div>
+          <div>
+            <label class="label">Periodicidad</label>
+            <select id="filter-periodicidad" class="input w-full">
+              <option value="">Todas las periodicidades</option>
+            </select>
+          </div>
+        </section>
+
+        <!-- Botón limpiar filtros -->
+        <section class="card mb-4 flex justify-end">
+          <button id="btn-limpiar" class="btn-secondary btn">Limpiar Filtros</button>
+        </section>
+
+        <!-- Contador de resultados -->
+        <div id="results-count" class="results-count"></div>
+
+        <!-- Resultados -->
+        <div id="campanas-resultados"></div>
+      </div>
+    </div>
   </div>
 
+  <style>
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+
   <script>
-    // JSON en la misma carpeta que index.html
+    // ============================================
+    // SISTEMA DE PESTAÑAS
+    // ============================================
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const targetTab = tab.dataset.tab;
+        
+        // Activar pestaña
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        // Mostrar contenido
+        document.querySelectorAll('.tab-content').forEach(content => {
+          content.classList.remove('active');
+        });
+        document.getElementById(`tab-${targetTab}`).classList.add('active');
+        
+        // Cargar datos de campañas si es la primera vez que se accede a la pestaña
+        if (targetTab === 'campanas' && !datosLoaded) {
+          loadCampanasData();
+        }
+      });
+    });
+
+    // ============================================
+    // COTIZADOR GNP SALUD (PESTAÑA 1)
+    // ============================================
     const JSON_PATH = {
       BIMBO: 'pricing-bimbo.json',
       STRM_LINEA_AZUL: 'pricing-strm.json',
@@ -226,12 +401,9 @@
     function rangoDeEdad(edad) {
       edad = Number(edad || 0);
       if (edad < 0) edad = 0;
-    
-      if (edad <= 4) return '00-04';       // primer bloque
-      if (edad <= 14) return '05-14';      // bloque especial unido
-      if (edad >= 80) return '80-mas';     // último bloque abierto
-    
-      // a partir de 15 va en bloques de 5: 15-19, 20-24, …, 75-79
+      if (edad <= 4) return '00-04';
+      if (edad <= 14) return '05-14';
+      if (edad >= 80) return '80-mas';
       const start = Math.floor((edad - 15) / 5) * 5 + 15;
       const end = Math.min(start + 4, 79);
       return `${String(start).padStart(2, '0')}-${String(end).padStart(2, '0')}`;
@@ -304,7 +476,6 @@
       const btn = $('#btn-consultar'); btn.disabled = true;
       $('#status').classList.add('hidden');
       
-      // Ocultar todos los resultados inicialmente
       $('#result-original').style.display = 'none';
       $('#result-adjusted').style.display = 'none';
       $('#result-mixto').style.display = 'none';
@@ -319,9 +490,8 @@
         const pagoMixto = cliente === 'STRM' && $('#pago-mixto').checked;
         
         const pricing = await loadJSON(cliente, producto);
-        let r; // resultado base (sin extra-prima)
+        let r;
         
-        // Calcular prima base según cliente
         if (cliente === 'BIMBO') {
           r = calcularBimbo(pricing, genero, edad);
         } else {
@@ -329,13 +499,11 @@
           r = calcularStrm(pricing, plan, genero, edad);
         }
         
-        // Mostrar resultados base (prima original)
         $('#result-original').style.display = '';
         $('#badge-original').textContent = extraPrimaPct > 0 ? 'ORIGINAL' : 'TOTAL';
         $('#total-original').textContent = formatMoney(r.total);
         $('#mensual-original').textContent = formatMoney(r.mensual);
         
-        // Configurar filas de periodicidad según cliente
         if (cliente === 'BIMBO') {
           $('#row-semanal-original').style.display = '';
           $('#row-catorcenal-original').style.display = '';
@@ -347,7 +515,6 @@
           $('#semanal-original').textContent = formatMoney(r.semanal);
         }
         
-        // Calcular y mostrar extra-prima si es > 0
         if (extraPrimaPct > 0) {
           const factor = 1 + (extraPrimaPct / 100);
           const rAdjusted = {
@@ -374,9 +541,7 @@
           }
         }
         
-        // Calcular y mostrar pago mixto si está activo
         if (pagoMixto) {
-          // El mixto se calcula ANTES de extra-prima, así que usamos r.total (prima base)
           const totalParaMixto = extraPrimaPct > 0 
             ? Number((r.total * (1 + extraPrimaPct/100)).toFixed(2))
             : r.total;
@@ -391,7 +556,6 @@
           $('#mixto-diciembre').textContent = formatMoney(diciembre);
         }
         
-        // Meses de cobertura (usar mensual con o sin extra-prima)
         const mensualParaMeses = extraPrimaPct > 0 
           ? Number((r.mensual * (1 + extraPrimaPct/100)).toFixed(2))
           : r.mensual;
@@ -413,6 +577,269 @@
     toggleProductoYPlan();
     $('#cliente').addEventListener('change', toggleProductoYPlan);
     $('#btn-consultar').addEventListener('click', consultar);
+
+    // ============================================
+    // SELECTOR DE CAMPAÑAS (PESTAÑA 2)
+    // ============================================
+    
+    // Rutas a archivos JSON
+    const DATA_PATHS = {
+      CAMPANAS: 'data/campanas.json',
+      EJEMPLOS: 'data/ejemplos-expedientes.json'
+    };
+    
+    // Variables globales para datos
+    let CAMPANAS_DATA = [];
+    let EJEMPLOS_EXPEDIENTES = {};
+    let datosLoaded = false;
+
+    // Cargar datos desde JSON
+    async function loadCampanasData() {
+      try {
+        const [campanasRes, ejemplosRes] = await Promise.all([
+          fetch(DATA_PATHS.CAMPANAS),
+          fetch(DATA_PATHS.EJEMPLOS)
+        ]);
+        
+        if (!campanasRes.ok || !ejemplosRes.ok) {
+          throw new Error('Error al cargar datos de campañas');
+        }
+        
+        CAMPANAS_DATA = await campanasRes.json();
+        EJEMPLOS_EXPEDIENTES = await ejemplosRes.json();
+        datosLoaded = true;
+        
+        // Ocultar loader y mostrar contenido
+        $('#campanas-loader').style.display = 'none';
+        $('#campanas-main').style.display = 'block';
+        
+        // Inicializar selector
+        initCampanasSelectors();
+        renderCampanas();
+        
+      } catch (error) {
+        console.error('Error cargando datos:', error);
+        $('#campanas-loader').innerHTML = `
+          <div style="color:#dc2626;padding:2rem">
+            <p style="font-weight:600;margin-bottom:0.5rem">⚠️ Error al cargar datos</p>
+            <p style="font-size:0.9rem;color:#6B7280">Verifica que los archivos JSON estén en la carpeta "data/"</p>
+          </div>
+        `;
+      }
+    }
+
+    // Estado de filtros
+    let currentFilters = {
+      empresa: '',
+      aseguradora: '',
+      periodicidad: '',
+      search: ''
+    };
+
+    // Inicializar selectores
+    function initCampanasSelectors() {
+      const empresas = [...new Set(CAMPANAS_DATA.map(c => c.empresa))].sort();
+      const aseguradoras = [...new Set(CAMPANAS_DATA.map(c => c.aseguradora))].sort();
+      const periodicidades = [...new Set(CAMPANAS_DATA.map(c => c.periodicidad))].sort();
+
+      const empresaSelect = $('#filter-empresa');
+      empresas.forEach(e => {
+        const opt = document.createElement('option');
+        opt.value = e;
+        opt.textContent = e;
+        empresaSelect.appendChild(opt);
+      });
+
+      const aseguradoraSelect = $('#filter-aseguradora');
+      aseguradoras.forEach(a => {
+        const opt = document.createElement('option');
+        opt.value = a;
+        opt.textContent = a;
+        aseguradoraSelect.appendChild(opt);
+      });
+
+      const periodicidadSelect = $('#filter-periodicidad');
+      periodicidades.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p;
+        opt.textContent = p;
+        periodicidadSelect.appendChild(opt);
+      });
+    }
+
+    // Filtrar campañas
+    function getFilteredCampanas() {
+      return CAMPANAS_DATA.filter(c => {
+        const matchEmpresa = !currentFilters.empresa || c.empresa === currentFilters.empresa;
+        const matchAseguradora = !currentFilters.aseguradora || c.aseguradora === currentFilters.aseguradora;
+        const matchPeriodicidad = !currentFilters.periodicidad || c.periodicidad === currentFilters.periodicidad;
+        const matchSearch = !currentFilters.search || 
+          c.campana.toLowerCase().includes(currentFilters.search.toLowerCase());
+        
+        return matchEmpresa && matchAseguradora && matchPeriodicidad && matchSearch;
+      });
+    }
+
+    // Actualizar opciones disponibles en selectores (filtrado cascada)
+    function updateAvailableOptions() {
+      const filtered = CAMPANAS_DATA.filter(c => {
+        const matchEmpresa = !currentFilters.empresa || c.empresa === currentFilters.empresa;
+        const matchAseguradora = !currentFilters.aseguradora || c.aseguradora === currentFilters.aseguradora;
+        const matchPeriodicidad = !currentFilters.periodicidad || c.periodicidad === currentFilters.periodicidad;
+        return matchEmpresa && matchAseguradora && matchPeriodicidad;
+      });
+
+      // Actualizar aseguradoras disponibles
+      if (currentFilters.empresa) {
+        const availableAseguradoras = [...new Set(
+          CAMPANAS_DATA.filter(c => c.empresa === currentFilters.empresa).map(c => c.aseguradora)
+        )].sort();
+        
+        const aseguradoraSelect = $('#filter-aseguradora');
+        const currentValue = aseguradoraSelect.value;
+        aseguradoraSelect.innerHTML = '<option value="">Todas las aseguradoras</option>';
+        availableAseguradoras.forEach(a => {
+          const opt = document.createElement('option');
+          opt.value = a;
+          opt.textContent = a;
+          aseguradoraSelect.appendChild(opt);
+        });
+        if (availableAseguradoras.includes(currentValue)) {
+          aseguradoraSelect.value = currentValue;
+        }
+      }
+
+      // Actualizar periodicidades disponibles
+      if (currentFilters.empresa || currentFilters.aseguradora) {
+        const base = CAMPANAS_DATA.filter(c => {
+          const matchEmpresa = !currentFilters.empresa || c.empresa === currentFilters.empresa;
+          const matchAseguradora = !currentFilters.aseguradora || c.aseguradora === currentFilters.aseguradora;
+          return matchEmpresa && matchAseguradora;
+        });
+        
+        const availablePeriodicidades = [...new Set(base.map(c => c.periodicidad))].sort();
+        
+        const periodicidadSelect = $('#filter-periodicidad');
+        const currentValue = periodicidadSelect.value;
+        periodicidadSelect.innerHTML = '<option value="">Todas las periodicidades</option>';
+        availablePeriodicidades.forEach(p => {
+          const opt = document.createElement('option');
+          opt.value = p;
+          opt.textContent = p;
+          periodicidadSelect.appendChild(opt);
+        });
+        if (availablePeriodicidades.includes(currentValue)) {
+          periodicidadSelect.value = currentValue;
+        }
+      }
+    }
+
+    // Renderizar resultados
+    function renderCampanas() {
+      const filtered = getFilteredCampanas();
+      const container = $('#campanas-resultados');
+      const countEl = $('#results-count');
+
+      if (filtered.length === 0) {
+        countEl.innerHTML = '';
+        container.innerHTML = `
+          <div class="empty-state">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <p class="text-lg">No se encontraron campañas</p>
+            <p class="text-sm mt-2">Intenta ajustar los filtros o la búsqueda</p>
+          </div>
+        `;
+        return;
+      }
+
+      countEl.innerHTML = `<strong>${filtered.length}</strong> ${filtered.length === 1 ? 'campaña encontrada' : 'campañas encontradas'}`;
+
+      container.innerHTML = filtered.map((c, idx) => {
+        const ejemplos = EJEMPLOS_EXPEDIENTES[c.empresa] || [];
+        const ejemplosHTML = ejemplos.length > 0 ? `
+          <div style="background:#F0F9FF;border:1px solid #BAE6FD;border-radius:8px;padding:.7rem;margin-top:.6rem">
+            <div style="font-size:.75rem;font-weight:600;color:#0369A1;margin-bottom:.4rem">
+              💡 Expediente: ${c.digitos_expediente}
+            </div>
+            <div style="font-size:.7rem;color:#0284C7;margin-bottom:.35rem;font-weight:500">Ejemplos:</div>
+            <div style="font-family:monospace;font-size:.85rem;color:#0C4A6E;display:flex;flex-direction:column;gap:.25rem">
+              ${ejemplos.map(ej => `<div>${ej}</div>`).join('')}
+            </div>
+          </div>
+        ` : '';
+        
+        return `
+        <div class="campana-card">
+          <div class="flex justify-between items-start">
+            <div style="flex:1">
+              <div class="campana-nombre">${c.campana}</div>
+              <div class="campana-meta">
+                <span>📍 ${c.empresa}</span>
+                <span>🏢 ${c.aseguradora}</span>
+                <span>📅 ${c.periodicidad}</span>
+                <span>💳 ${c.via_pago}</span>
+              </div>
+              ${ejemplosHTML}
+            </div>
+            <button class="copy-btn" data-campana="${c.campana}" data-idx="${idx}">
+              📋 Copiar
+            </button>
+          </div>
+        </div>
+      `}).join('');
+
+      // Agregar event listeners a botones de copiar
+      container.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const campana = btn.dataset.campana;
+          navigator.clipboard.writeText(campana).then(() => {
+            btn.textContent = '✓ Copiado';
+            btn.classList.add('copied');
+            setTimeout(() => {
+              btn.textContent = '📋 Copiar';
+              btn.classList.remove('copied');
+            }, 2000);
+          });
+        });
+      });
+    }
+
+    // Event listeners para filtros
+    $('#filter-empresa').addEventListener('change', (e) => {
+      currentFilters.empresa = e.target.value;
+      updateAvailableOptions();
+      renderCampanas();
+    });
+
+    $('#filter-aseguradora').addEventListener('change', (e) => {
+      currentFilters.aseguradora = e.target.value;
+      updateAvailableOptions();
+      renderCampanas();
+    });
+
+    $('#filter-periodicidad').addEventListener('change', (e) => {
+      currentFilters.periodicidad = e.target.value;
+      renderCampanas();
+    });
+
+    $('#search-input').addEventListener('input', (e) => {
+      currentFilters.search = e.target.value;
+      renderCampanas();
+    });
+
+    $('#btn-limpiar').addEventListener('click', () => {
+      currentFilters = { empresa: '', aseguradora: '', periodicidad: '', search: '' };
+      $('#filter-empresa').value = '';
+      $('#filter-aseguradora').value = '';
+      $('#filter-periodicidad').value = '';
+      $('#search-input').value = '';
+      
+      // Reinicializar selectores
+      initCampanasSelectors();
+      renderCampanas();
+    });
   </script>
 </body>
 </html>
